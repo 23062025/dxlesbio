@@ -21,277 +21,887 @@
        ------------------------- */
     canvas#globeCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;display:block}
     canvas#effectsCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:5;pointer-events:none}
-    #overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:10;transition:opacity .5s}
-    #intro{z-index:11;flex-direction:column;text-align:center;pointer-events:none}
-    #intro h1{font-family:"Orbitron",sans-serif;font-weight:700;font-size:2rem;color:#ff0044;text-shadow:0 0 10px #ff0044}
-    #intro p{color:#888;font-size:1rem;margin-top:10px}
-    #midload{z-index:12;flex-direction:column;text-align:center;pointer-events:none}
-    #midload h2{font-family:"Orbitron",sans-serif;font-weight:400;font-size:1.5rem;color:#fff}
-    #login{z-index:13;flex-direction:column;align-items:center;width:calc(100% - 40px);max-width:320px;padding:30px;background:rgba(20,20,20,0.85);border:1px solid rgba(255,255,255,0.1);border-radius:10px;text-align:center}
-    #login h2{font-family:"Orbitron",sans-serif;margin-bottom:20px;color:#fff}
-    #login input{width:100%;padding:12px;margin:8px 0;background:#222;border:1px solid #444;border-radius:5px;color:#fff;font-size:1rem;outline:none;transition:border-color .2s}
-    #login input:focus{border-color:#ff0044}
-    #login button{width:100%;padding:12px;margin-top:15px;background:#ff0044;color:#fff;border:none;border-radius:5px;font-size:1rem;font-weight:bold;cursor:pointer;transition:background-color .2s, transform .1s}
-    #login button:hover{background-color:#cc0033;transform:translateY(-1px)}
-    #login .small-links a{color:#bbb;font-size:0.8rem;margin:10px;display:inline-block;transition:color .2s}
-    #login .small-links a:hover{color:#fff}
 
     /* -------------------------
-       APP CONTAINER
+       INTRO LOADER (first load)
        ------------------------- */
-    #app{display:none;width:100%;height:100%;position:relative;z-index:2;overflow:hidden}
-
-    /* -------------------------
-       NAVBAR / HEADER
-       ------------------------- */
-    #navbar{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);z-index:100}
-    #navbar .logo{font-family:"Orbitron",sans-serif;font-weight:700;font-size:1.5rem;color:#ff0044}
-    #navbar .nav-links a{margin-left:25px;font-size:1rem;color:#fff;opacity:.8;transition:opacity .2s,color .2s}
-    #navbar .nav-links a:hover{opacity:1;color:#ff0044}
-    #navbar .user-info{display:flex;align-items:center;gap:10px}
-    #navbar .user-info span{font-size:0.9rem;color:#ccc;white-space:nowrap}
-    #navbar .user-info button{background:none;border:1px solid #ff0044;color:#ff0044;padding:6px 12px;border-radius:5px;font-size:0.8rem;cursor:pointer;transition:background .2s,color .2s}
-    #navbar .user-info button:hover{background:#ff0044;color:#fff}
-
-    /* -------------------------
-       MAIN CONTENT / SECTIONS
-       ------------------------- */
-    .pageSection{display:none;padding:100px 20px 20px;max-width:900px;margin:0 auto;position:relative;z-index:2;height:100vh;overflow-y:auto}
-    .pageSection h1{font-family:"Orbitron",sans-serif;font-weight:700;font-size:2.5rem;text-align:center;margin-bottom:40px;color:#fff}
-    
-    /* Home Section */
-    .hero-text{text-align:center;margin-top:10vh}
-    .hero-text h2{font-family:"Orbitron",sans-serif;font-weight:400;font-size:2.5rem;color:#fff;text-shadow:0 0 10px rgba(255,255,255,0.2);margin-bottom:20px}
-    .hero-text .typing-container{min-height:100px;background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);padding:20px;border-radius:10px;line-height:1.6;font-size:1.1rem;white-space:pre-wrap;text-align:left;position:relative}
-    .hero-text .typing-cursor{font-weight:100;animation:blink-caret .75s step-end infinite;color:#ff0044}
-    @keyframes blink-caret{from,to{color:transparent}50%{color:#ff0044}}
-
-    /* About Section */
-    .about-text{text-align:center;margin-bottom:40px;line-height:1.6;font-size:1.1rem}
-    .about-qa-item{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;margin-bottom:15px;cursor:pointer;transition:background-color .2s}
-    .about-qa-item:hover{background-color:rgba(30,30,30,0.8)}
-    .about-qa-item .question{padding:15px 20px;font-weight:bold;color:#fff;position:relative}
-    .about-qa-item .question:after{content:'+';position:absolute;right:20px;top:50%;transform:translateY(-50%);transition:transform .2s}
-    .about-qa-item.open .question:after{content:'-';transform:rotate(45deg)}
-    .about-qa-item .answer{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease-out,padding .3s ease-out}
-    .about-qa-item.open .answer{padding:15px 20px;max-height:500px}
-    .about-qa-item .answer p{color:#bbb;line-height:1.5}
-
-    /* Education Section */
-    .education-item{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;margin-bottom:15px;padding:15px 20px;position:relative}
-    .education-item h3{margin-bottom:5px;color:#ff0044}
-    .education-item p{color:#ccc;font-size:0.9rem}
-
-    /* Projects Section */
-    .project-grid{display:grid;grid-template-columns:1fr;gap:20px}
-    @media (min-width: 600px){
-      .project-grid{grid-template-columns:1fr 1fr}
+    .introOverlay{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;
+      background:#000;z-index:200;gap:18px;
+      animation:introIn .6s ease forwards;
     }
-    .project-card{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;transition:transform .2s, box-shadow .2s}
-    .project-card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.3)}
-    .project-card img{width:80px;height:80px;margin-bottom:15px;border-radius:10px}
-    .project-card h3{color:#ff0044;margin-bottom:5px}
-    .project-card p{color:#bbb;font-size:0.9rem}
-
-    /* Blog Section */
-    .blog-post{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:20px;margin-bottom:20px}
-    .blog-post h3{color:#fff;margin-bottom:5px}
-    .blog-post .meta{color:#888;font-size:0.8rem;margin-bottom:10px}
-    .blog-post p{color:#bbb;line-height:1.5}
-
-    /* Comments Section */
-    .comments-section{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:20px;margin-top:20px}
-    .comments-section h3{margin-bottom:15px;color:#fff}
-    .comment-form textarea, .comment-form input{width:100%;padding:10px;margin-bottom:10px;background:#222;border:1px solid #444;border-radius:5px;color:#fff;font-size:0.9rem;resize:vertical}
-    .comment-form button{background:#ff0044;color:#fff;border:none;padding:10px 15px;border-radius:5px;cursor:pointer}
-    .comment-list{margin-top:20px;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px}
-    .comment-list-item{border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:15px;margin-bottom:15px}
-    .comment-list-item .author{font-weight:bold;color:#ff0044;margin-bottom:5px}
-    .comment-list-item .text{color:#ccc;line-height:1.5}
-    
-    /* Media Queries */
-    @media (max-width: 600px){
-      #navbar .logo{font-size:1.2rem}
-      #navbar .nav-links a{margin-left:15px;font-size:0.9rem}
-      .pageSection{padding-top:80px}
-      .pageSection h1{font-size:2rem}
-      .hero-text h2{font-size:2rem}
-      .hero-text .typing-container{font-size:1rem}
+    .introOverlay h1{
+      color:#ff0044;font-family:"Orbitron";font-size:28px;letter-spacing:3px;
+      text-transform:uppercase;text-align:center;
+      filter:drop-shadow(0 0 10px rgba(255,0,68,0.8));
+      animation:glitch 1.4s infinite;
     }
+    .introOverlay p{color:#ccc;font-size:14px;opacity:.9}
+
+    @keyframes introIn {from{opacity:0}to{opacity:1}}
+    @keyframes glitch {
+      0%{text-shadow:2px 2px 0 rgba(255,0,68,0.7)}
+      20%{text-shadow:-2px -2px 0 rgba(0,255,255,0.5)}
+      40%{text-shadow:2px -2px 0 rgba(255,255,255,0.2)}
+      60%{text-shadow:-2px 2px 0 rgba(255,0,68,0.5)}
+      80%{text-shadow:2px 2px 0 rgba(0,255,255,0.3)}
+      100%{text-shadow:-2px -2px 0 rgba(255,0,68,0.7)}
+    }
+
+    /* -------------------------
+       LOGIN MODAL (username + password)
+       ------------------------- */
+    .loginOverlay{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:150;
+      background:linear-gradient(180deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+      backdrop-filter: blur(4px);
+    }
+    .loginCard{
+      width: min(520px, 92%);
+      background: linear-gradient(180deg, rgba(18,18,18,1), rgba(8,8,8,0.9));
+      border:1px solid rgba(255,0,68,0.12);
+      padding:28px;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,0.6);
+      display:flex;flex-direction:column;gap:14px;align-items:center;
+    }
+    .loginTitle{font-family:"Orbitron";font-size:20px;color:#ff0044;text-shadow:0 0 18px rgba(255,0,68,0.14)}
+    .loginHint{color:#aaa;font-size:13px;text-align:center}
+    .usernameInput, .passwordInput{
+      width:100%;max-width:380px;padding:12px 14px;border-radius:10px;
+      background:rgba(11, 11, 11, 1);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#eee;font-size:16px;outline:none;
+      box-shadow: 0 0 8px rgba(255,0,68,0.03) inset;
+    }
+    .loginButtons{display:flex;gap:10px;width:100%;max-width:380px}
+    .btn{
+      flex:1;
+      padding:10px 16px;border-radius:10px;border:0;background:#ff0044;color:#fff;font-weight:700;cursor:pointer;
+      box-shadow:0 6px 22px rgba(255,0,68,0.14);transition:transform .14s ease,box-shadow .14s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn-secondary{
+      flex:1;
+      padding:10px 16px;border-radius:10px;border:1px solid #00ffff;background:rgba(0,255,255,0.05);color:#00ffff;
+      box-shadow:0 6px 22px rgba(0,255,255,0.1);transition:transform .14s ease;cursor:pointer;
+      font-weight:700;
+    }
+    .btn-secondary:active{transform:translateY(1px)}
+
+    /* -------------------------
+       SECOND LOADER (after login)
+       ------------------------- */
+    .midLoad{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.2));z-index:160;backdrop-filter: blur(2px);
+    }
+    .midLoad .msg{
+      font-family:"Orbitron";font-size:22px;color:#00ffff;text-shadow:0 0 20px rgba(0,255,255,0.12);
+      display:flex;align-items:center;gap:12px;
+    }
+    .spinner{
+      width:46px;height:46px;border-radius:50%;border:4px solid rgba(255,255,255,0.06);
+      border-top-color:#ff0044;animation:spin 1s linear infinite;box-shadow:0 0 10px rgba(255,0,68,0.12);
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* -------------------------
+       APP LAYOUT (after loaded)
+       ------------------------- */
+    .app {
+      position:relative;z-index:20;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;
+      pointer-events:auto;overflow:auto;
+    }
+    header.appHeader{
+      position:fixed;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:center;z-index:30;
+      gap:10px;
+    }
+    .logoSmall{
+      display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;background:linear-gradient(90deg, rgba(0,0,0,0.8), rgba(10,10,10,0.7));
+      border:1px solid rgba(255,0,68,0.06);
+      box-shadow:0 6px 20px rgba(0,0,0,0.6);
+    }
+    .logoSmall .dot{width:10px;height:10px;border-radius:50%;background:#ff0044;box-shadow:0 0 10px rgba(255,0,68,0.9)}
+    nav.topNav{display:flex;gap:10px;align-items:center;flex-wrap: wrap;justify-content:center;}
+    nav.topNav a, .logoutBtn {
+      padding:8px 12px;
+      border-radius:8px;
+      font-weight:700;
+      color:#ddd;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.02);
+      transition: background .2s ease, transform .1s ease;
+      cursor: pointer;
+    }
+    nav.topNav a:hover {
+      background:rgba(255,255,255,0.04);
+      transform: translateY(-2px);
+    }
+    .logoutBtn{
+      background:#ff0044;
+      color:#fff;
+      border:none;
+      box-shadow:0 6px 18px rgba(255,0,68,0.14);
+    }
+
+    /* -------------------------
+       PAGE SECTIONS
+       ------------------------- */
+    .pageSection {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding-top: 110px;
+      overflow-y: auto;
+    }
+    #homePage {
+      display: block; /* initial page */
+    }
+
+    /* -------------------------
+       PAGE SPECIFIC STYLES
+       ------------------------- */
+    .panel{
+      width:min(980px,94%);
+      background:linear-gradient(180deg, rgba(8,8,8,0.9), rgba(3,3,3,0.7));
+      padding:20px;
+      border-radius:12px;
+      border:1px solid rgba(255,0,68,0.06);
+      box-shadow:0 12px 40px rgba(0,0,0,0.6);
+      margin: 20px auto;
+    }
+
+    .avatar{
+      width:180px;height:180px;border-radius:50%;overflow:hidden;border:6px solid rgba(255,0,68,0.12);
+      display:grid;place-items:center;position:relative;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.15));
+      transform:translateY(0);transition:transform .35s cubic-bezier(.2,.9,.2,1),box-shadow .35s;
+      box-shadow:0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    .welcome{
+      font-family:"Orbitron";font-size:28px;color:#ff0044;text-shadow:0 0 30px rgba(255,0,68,0.12);
+      transition:all .3s;
+    }
+
+    .about-qa-item, .education-qa-item {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(15, 15, 15, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .about-qa-item:hover, .education-qa-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(255, 0, 68, 0.1);
+    }
+    .about-qa-item .question, .education-qa-item .question {
+      font-family:"Orbitron";
+      color:#00ffff;
+      text-shadow: 0 0 10px rgba(0,255,255,0.5);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .about-qa-item .question .toggle-icon, .education-qa-item .question .toggle-icon {
+        font-size: 24px;
+        color: #ff0044;
+        transition: transform 0.3s ease;
+    }
+    .about-qa-item.open .question .toggle-icon, .education-qa-item.open .question .toggle-icon {
+        transform: rotate(45deg);
+    }
+    .about-qa-item .answer, .education-qa-item .answer {
+      color:#e8e8e8;
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.5s ease-out, opacity 0.5s ease-out;
+      opacity:0;
+    }
+    .about-qa-item.open .answer, .education-qa-item.open .answer {
+        max-height: 2000px; /* Increased height to accommodate longer text */
+        opacity:1;
+        margin-top: 10px;
+    }
+
+    .comment-list-item {
+        padding: 12px;
+        border-radius: 8px;
+        background: linear-gradient(180deg, rgba(12,12,12,0.9), rgba(6,6,6,0.8));
+        border: 1px solid rgba(255,255,255,0.03);
+        animation: fadeIn 0.5s ease-out;
+    }
+    .comment-list-item + .comment-list-item {
+        margin-top: 12px;
+    }
+    .comment-list-item .author {
+        font-weight:700;
+        color:#ff0044;
+    }
+    .comment-list-item .text {
+        margin-top: 6px;
+        color:#eee;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* NEW COMMENTS SECTION STYLES */
+    #commentSection .commentBox {
+      padding: 24px; /* daha geniş */
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(12,12,12,0.9), rgba(5,5,5,0.8));
+      border: 1px solid rgba(255,0,68,0.1);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+    #commentSection .commentBox h4 {
+        color: #00ffff;
+        font-family: "Orbitron";
+        margin-bottom: 0px;
+    }
+    #commentSection .commentBox input,
+    #commentSection .commentBox textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      resize: vertical;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    #commentSection .commentBox input:focus,
+    #commentSection .commentBox textarea:focus {
+        border-color: #ff0044;
+        background: rgba(255,255,255,0.08);
+        box-shadow: inset 0 0 10px rgba(255,0,68,0.2), 0 0 10px rgba(255,0,68,0.4);
+    }
+    #commentSection .commentBox textarea {
+        min-height: 100px;
+    }
+
+    .education-qa-item pre {
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid rgba(255, 0, 68, 0.1);
+        border-radius: 8px;
+        padding: 15px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        color: #ddd;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-x: auto;
+        box-shadow: 0 0 15px rgba(255, 0, 68, 0.1);
+        margin-top: 12px;
+    }
+
+    .education-qa-item .output {
+      display: block;
+      margin-top: 8px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      color: #76ff03; /* Neon green for output */
+      padding: 8px 10px;
+      background: rgba(0, 0, 0, 0.5);
+      border-left: 3px solid #76ff03;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .education-qa-item p {
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .education-qa-item ul, .education-qa-item ol {
+      padding-left: 20px;
+    }
+    .education-qa-item li {
+      margin-bottom: 6px;
+    }
+
+    #contactSection a {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: text-shadow 0.3s ease, transform 0.3s ease;
+        text-shadow: 0 0 0 #ff0044;
+    }
+    #contactSection a:hover {
+        text-shadow: 0 0 20px #ff0044, 0 0 30px #00ffff;
+        transform: scale(1.05);
+    }
+    
+    /* -------------------------
+       FOOTER SPACE
+       ------------------------- */
+    .spacer{height:80px}
+
+    /* -------------------------
+       RESPONSIVE
+       ------------------------- */
+    @media (max-width:720px){
+      .welcome{font-size:24px}
+      .avatar{width:160px;height:160px}
+      header.appHeader{
+        flex-direction:column;
+        align-items:center;
+        top:10px;
+        left:10px;
+        right:10px;
+        gap:10px;
+      }
+      nav.topNav{flex-wrap:wrap;justify-content:center}
+      .loginCard{padding:18px}
+      .panel{padding:16px}
+      .comment-list-item .author{font-size:15px}
+      .comment-list-item .text{font-size:14px}
+      
+      /* Mobile specific adjustments */
+      .pageSection {
+        padding-top: 150px; /* Adjust for stacked header */
+      }
+      #homePage .heroWrap {
+        margin-top: 150px;
+      }
+      
+      #commentSection .commentBox,
+      #commentSection .commentList {
+          min-width: unset;
+      }
+      #commentSection .commentBox h4 {
+          font-size: 1.1em;
+      }
+      #commentSection .commentBox textarea {
+          min-height: 80px;
+      }
+    }
+    
   </style>
-
 </head>
 <body>
 
   <canvas id="globeCanvas"></canvas>
+
   <canvas id="effectsCanvas"></canvas>
-  
-  <div id="overlay">
-    
-    <div id="intro" style="display: none;">
-      <h1>DXLES</h1>
-      <p>Boot sequence initializing — neon grid engaging</p>
-    </div>
-    
-    <div id="midload" style="display: none;">
-      <h2>LOADING DXLES — initializing environment</h2>
-    </div>
-    
-    <div id="login" style="display: none;">
-      <h2>SISTEME GİRİŞ</h2>
-      <input type="text" id="usernameInput" placeholder="Kullanıcı Adı" />
-      <input type="password" id="passwordInput" placeholder="Şifre" />
-      <button id="doLogin">GİRİŞ YAP</button>
-      <div class="small-links">
-        <a href="#" id="signupBtn">Kaydol</a>
-        <a href="#" id="forgotPasswordLink">Şifremi Unuttum</a>
-      </div>
-    </div>
-    
+
+  <div id="intro" class="introOverlay" aria-hidden="false">
+    <h1>LOADING DXLES...</h1>
+    <p class="smallMuted">Boot sequence initializing — neon grid engaging</p>
   </div>
 
-  <div id="app">
-    
-    <header id="navbar">
-      <div class="logo">DXLES</div>
-      <div class="nav-links">
-        <a href="#" onclick="showPage('homePage')">ANA SAYFA</a>
-        <a href="#" onclick="showPage('aboutPage')">HAKKIMDA</a>
-        <a href="#" onclick="showPage('educationPage')">EĞİTİM</a>
-        <a href="#" onclick="showPage('projectsPage')">PROJELER</a>
-        <a href="#" onclick="showPage('blogPage')">BLOG</a>
-        <a href="#" onclick="showPage('contactPage')">İLETİŞİM</a>
+  <div id="login" class="loginOverlay" style="display:none">
+    <div class="loginCard" role="dialog" aria-label="Giriş">
+      <div class="loginTitle">DXLES — Giriş</div>
+      <div class="loginHint">Sadece yetkili personel.</div>
+      <input id="usernameInput" class="usernameInput" placeholder="Kullanıcı adın..." maxlength="28" />
+      <input id="passwordInput" class="passwordInput" type="password" placeholder="Şifre..." />
+      <div class="loginButtons">
+        <button class="btn" id="doLogin">Giriş Yap</button>
+        <button class="btn-secondary" id="signupBtn">Yeni Hesap</button>
       </div>
-      <div class="user-info">
-        <img id="avatarImg" src="https://via.placeholder.com/180x180.png?text=DXLES" style="width: 32px; height: 32px; border-radius: 50%;">
-        <span id="displayUser">Ziyaretçi</span>
-        <button id="logout">Çıkış</button>
+      <a href="#" id="forgotPasswordLink" style="color:#00ffff;font-size:12px;margin-top:8px">Şifremi unuttum</a>
+    </div>
+  </div>
+
+  <div id="midload" class="midLoad" style="display:none">
+    <div class="spinner" aria-hidden="true"></div>
+    <div class="msg">LOADING DXLES — initializing environment</div>
+  </div>
+
+  <div id="app" class="app" style="display:none;">
+
+    <header class="appHeader">
+      <div class="logoSmall">
+        <div class="dot"></div>
+        <div style="font-weight:700">DXLES</div>
       </div>
+
+      <nav class="topNav" aria-label="menu">
+        <a href="#" onclick="showPage('homePage'); return false;">Anasayfa</a>
+        <a href="#" onclick="showPage('aboutPage'); return false;">Hakkımda (Q&A)</a>
+        <a href="#" onclick="showPage('educationPage'); return false;">Eğitim</a>
+        <a href="#" onclick="showPage('commentsPage'); return false;">Yorumlar</a>
+        <a href="#" onclick="showPage('contactPage'); return false;">İletişim</a>
+        <button class="logoutBtn" id="logout">Logout</button>
+        </nav>
     </header>
 
-    <section id="homePage" class="pageSection active-page">
-      <div class="hero-text">
-        <h2>DXLES</h2>
-        <div class="typing-container">
-          <span id="typingAnswer">...</span>
-          <span class="typing-cursor">|</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="aboutPage" class="pageSection">
-      <h1>HAKKIMDA</h1>
-      <div class="about-text">
-        <p>
-          "DXLES" adı, "Digital" ve "Nexus" kelimelerinin birleşiminden geliyor.
-          Dijital dünyada bir bağlantı noktası, bir merkez olmayı hedefliyor.
-        </p>
-      </div>
-
-      <div class="about-qa-item">
-        <div class="question">Neden DXLES?</div>
-        <div class="answer">
-          <p>
-            Dxles, hem dijital evrenin derinliklerini keşfetmek hem de bu alanda
-            yeni bağlantılar kurmak için kullandığım bir takma ad. Her projemde
-            bu felsefeyi yansıtmaya çalışıyorum.
-          </p>
-        </div>
-      </div>
-      <div class="about-qa-item">
-        <div class="question">Öne çıkan yeteneklerin neler?</div>
-        <div class="answer">
-          <p>
-            Hem front-end hem de back-end geliştirme konusunda deneyimim var.
-            Yapay zeka alanındaki çalışmalarım ise en tutkulu olduğum konu.
-            Yeni teknolojilere adapte olmak ve hızlı öğrenmek en güçlü yanım.
-          </p>
-        </div>
-      </div>
-    </section>
-    
-    <section id="educationPage" class="pageSection">
-      <h1>EĞİTİM</h1>
-      <div class="education-qa-item">
-        <div class="question">Lisans Eğitimi</div>
-        <div class="answer">
-          <p>İstanbul Üniversitesi, Bilgisayar Mühendisliği</p>
-        </div>
-      </div>
-      <div class="education-qa-item">
-        <div class="question">Yapay Zeka ve Makine Öğrenmesi</div>
-        <div class="answer">
-          <p>
-            Çeşitli online kurslar ve atölye çalışmaları ile derinlemesine
-            öğrenim. TensorFlow, PyTorch ve Scikit-learn kütüphanelerine hakimiyet.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="projectsPage" class="pageSection">
-      <h1>PROJELER</h1>
-      <div class="project-grid">
-        <a href="#" class="project-card">
-          <img src="https://via.placeholder.com/180x180.png?text=Proje+1" alt="Proje 1" />
-          <h3>Siber Güvenlik Botu</h3>
-          <p>
-            Yapay zeka kullanarak siber saldırıları tespit eden ve önleyen bir bot.
-            Python ile geliştirildi.
-          </p>
-        </a>
-        <a href="#" class="project-card">
-          <img src="https://via.placeholder.com/180x180.png?text=Proje+2" alt="Proje 2" />
-          <h3>DX-Chatbot</h3>
-          <p>
-            Doğal dil işleme (NLP) yeteneği olan ve özelleştirilebilir bir
-            chatbot platformu.
-          </p>
-        </a>
-      </div>
-    </section>
-
-    <section id="blogPage" class="pageSection">
-      <h1>BLOG</h1>
-      <div class="blog-post">
-        <h3>Web Geliştirmede Gelecek</h3>
-        <p class="meta">10 Ağustos 2025</p>
-        <p>
-          Web 3.0, yapay zeka ve blok zinciri teknolojileri, web geliştirmeyi
-          nasıl dönüştürecek?
-        </p>
-      </div>
-      <div class="blog-post">
-        <h3>Makine Öğrenmesi İçin 5 Python Kütüphanesi</h3>
-        <p class="meta">12 Haziran 2025</p>
-        <p>
-          Veri bilimine yeni başlayanlar için en faydalı kütüphaneler.
-        </p>
-      </div>
-    </section>
-
-    <section id="contactPage" class="pageSection">
-      <h1>İLETİŞİM</h1>
-      <div class="comments-section">
-        <h3>Yorum Bırak</h3>
-        <div class="comment-form">
-          <input type="text" id="commentName" placeholder="Adınız" />
-          <textarea id="commentText" placeholder="Yorumunuz"></textarea>
-          <button id="postComment">Yorumu Gönder</button>
-        </div>
-        <div id="commentList" class="comment-list">
-          <div class="comment-list-item">
-            <div class="author">Ziyaretçi</div>
-            <div class="text">Selam, siten harika olmuş!</div>
+    <main>
+      <section id="homePage" class="pageSection">
+        <div class="heroWrap" style="display:flex; flex-direction:column; align-items:center; gap:18px; min-height:60vh; padding:20px; z-index:10; margin-top:110px;">
+          <div class="avatar" title="DXLES avatar (hover)">
+            <img id="avatarImg" src="https://via.placeholder.com/180x180.png?text=DXLES" alt="DXLES">
+          </div>
+          <div class="welcome">Hoşgeldin, <span id="displayUser">Ziyaretçi</span></div>
+          <div class="typingBox panel" id="typingBox">
+            <div class="q">Dxles kimdir?</div>
+            <div class="a" id="typingAnswer">...</div>
           </div>
         </div>
-      </div>
-    </section>
+        <div class="spacer"></div>
+      </section>
+      
+      <section id="aboutPage" class="pageSection">
+        <div class="panel">
+          <h3 style="color:#ff0044;font-family:'Orbitron';margin-bottom:10px">Hakkımda (Soru-Cevap)</h3>
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div class="about-qa-item">
+              <div class="question"><span>Soru: DXLES kimdir?</span><span class="toggle-icon">+</span></div>
+              <div class="answer">Ben Dxles. Türkiye merkezli yazılım geliştiricisiyim — frontend, backend ve yapay zekâ ile uğraşıyorum. Deneyler, projeler ve bazı karanlık meraklarım var.</div>
+            </div>
+            <div class="about-qa-item">
+              <div class="question"><span>Soru: Hangi teknolojilerle çalışıyorsun?</span><span class="toggle-icon">+</span></div>
+              <div class="answer">Genellikle modern web teknolojilerine odaklanıyorum. JavaScript, Python, Node.js ve React gibi diller ve framework'ler en çok kullandıklarım arasında.</div>
+            </div>
+            <div class="about-qa-item">
+              <div class="question"><span>Soru: Gelecekteki projelerin neler?</span><span class="toggle-icon">+</span></div>
+              <div class="answer">Yapay zekâ ve siber güvenlik üzerine projeler geliştirmeyi planlıyorum. Özellikle kendi AI modellerimi oluşturmak ve siber tehditleri analiz eden araçlar geliştirmek istiyorum.</div>
+            </div>
+            <div class="about-qa-item">
+              <div class="question"><span>Soru: Bu web sitesi neden böyle bir tasarıma sahip?</span><span class="toggle-icon">+</span></div>
+              <div class="answer">Bu tasarım, siberpunk ve bilim kurgu temalarından ilham alıyor. Amacım, benim dijital kimliğimi ve ilgi alanlarımı yansıtan, fütüristik bir kullanıcı deneyimi sunmak.</div>
+            </div>
+            <div class="about-qa-item">
+              <div class="question"><span>Soru: Yapay zekâya ilgin nereden geliyor?</span><span class="toggle-icon">+</span></div>
+              <div class="answer">Yapay zekânın, geleceği şekillendirecek en önemli teknoloji olduğuna inanıyorum. Öğrenen makinelerin potansiyeli beni büyülüyor ve bu alanda sürekli yeni şeyler deniyorum.</div>
+            </div>
+            <div class="about-qa-item">
+              <div class="question"><span>Soru: Siber araştırmalar hakkında biraz daha bilgi verir misin?</span><span class="toggle-icon">+</span></div>
+              <div class="answer">Siber araştırmalar, dijital güvenlik zafiyetlerini ve sistem açıklarını incelemeyi içeriyor. Bu alandaki çalışmalarım, daha güvenli sistemler oluşturmama yardımcı oluyor.</div>
+            </div>
+            <div class="about-qa-item">
+              <div class="question"><span>Soru: Kendi projelerimi nasıl geliştirebilirim?</span><span class="toggle-icon">+</span></div>
+              <div class="answer">En iyi başlangıç, ilgini çeken küçük bir fikirle yola çıkmak. Basit bir projeyle başla, her adımı öğrenerek ilerle ve asla denemekten korkma.</div>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+      </section>
 
+      <section id="educationPage" class="pageSection">
+        <div class="panel">
+          <h3 style="color:#ff0044;font-family:'Orbitron';margin-bottom:10px">Eğitim Sayfası</h3>
+          <p>Yazılım dünyasına hoş geldin! Bu bölümde en popüler dillerin temel mantığını ve ilk adımlarını öğreneceksin.</p>
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            
+            <div class="education-qa-item">
+              <div class="question"><span>Python'a Giriş: İlk Adımlarınız</span><span class="toggle-icon">+</span></div>
+              <div class="answer">
+                <p>
+                  Python, basit ve okunabilir sözdizimi sayesinde yeni başlayanlar için harika bir dildir. Veri bilimi, yapay zekâ, web geliştirme ve otomasyon gibi birçok alanda kullanılır. En büyük avantajı, kod yazmayı bir metin yazmak kadar kolay hale getirmesidir.
+                </p>
+                <p>
+                  **1. Ekrana Yazı Yazmak: `print()` Fonksiyonu**<br>
+                  Python'da ekrana bir mesaj yazdırmak için `print()` fonksiyonunu kullanırız. Parantez içine yazdığımız her şey ekrana aynen yazdırılır. Tırnak işaretleri, bunun bir metin (`string`) olduğunu gösterir.
+                </p>
+                <pre><code>print("Merhaba Dünya!")
+print("Adım DXLES.")</code></pre>
+                <div class="output">
+                  Merhaba Dünya!
+                  Adım DXLES.
+                </div>
+                <p>
+                  **2. Değişkenler: Bilgiyi Saklamak**<br>
+                  Değişkenler, verileri sakladığımız kutucuklardır. Python'da bir değişkenin tipini (sayı, metin, vs.) belirtmenize gerek yoktur.
+                </p>
+                <pre><code># String (Metin) değişkeni
+isim = "DXLES"
+
+# Integer (Tam sayı) değişkeni
+yas = 15
+
+# Değişkenleri ekrana yazdırma
+print("Kullanıcı Adı:", isim)
+print("Yaşı:", yas)</code></pre>
+                <div class="output">
+                  Kullanıcı Adı: DXLES
+                  Yaşı: 15
+                </div>
+              </div>
+            </div>
+
+            <div class="education-qa-item">
+              <div class="question"><span>Python: Veri Yapıları ve Fonksiyonlar</span><span class="toggle-icon">+</span></div>
+              <div class="answer">
+                <p>
+                  Python'da verileri düzenlemek için çeşitli yapılar kullanılır. En yaygın olanları **Listeler** ve **Sözlükler**dir.
+                </p>
+                <p>
+                  **1. Listeler (`list`)**<br>
+                  Listeler, birden fazla öğeyi sıralı olarak saklayan koleksiyonlardır. Köşeli parantez `[]` ile oluşturulur.
+                </p>
+                <pre><code># Liste tanımlama
+meyveler = ["elma", "armut", "muz"]
+
+# Bir öğeye erişim
+print(meyveler[0]) # Çıktı: elma
+
+# Yeni öğe ekleme
+meyveler.append("çilek")
+print(meyveler)</code></pre>
+                <div class="output">
+                  elma
+                  ['elma', 'armut', 'muz', 'çilek']
+                </div>
+                <p>
+                  **2. Sözlükler (`dict`)**<br>
+                  Sözlükler, anahtar-değer çiftleri halinde verileri saklar. Süslü parantez `{}` ile oluşturulur.
+                </p>
+                <pre><code># Sözlük tanımlama
+kullanici = {
+  "isim": "DXLES",
+  "yas": 15,
+  "developer": True
+}
+
+# Bir değere erişim
+print(kullanici["isim"])</code></pre>
+                <div class="output">
+                  DXLES
+                </div>
+                <p>
+                  **3. Fonksiyonlar**<br>
+                  Fonksiyonlar, belirli bir görevi yerine getiren yeniden kullanılabilir kod bloklarıdır. `def` anahtar kelimesi ile tanımlanır.
+                </p>
+                <pre><code>def selamlama(isim):
+  print("Merhaba, " + isim + "!")
+
+selamlama("Yazılımcı")
+
+# Değer döndüren fonksiyon
+def topla(a, b):
+  return a + b
+
+sonuc = topla(5, 3)
+print("Sonuç:", sonuc)</code></pre>
+                <div class="output">
+                  Merhaba, Yazılımcı!
+                  Sonuç: 8
+                </div>
+              </div>
+            </div>
+
+            <div class="education-qa-item">
+              <div class="question"><span>Java'ya Giriş: Temel Kavramlar</span><span class="toggle-icon">+</span></div>
+              <div class="answer">
+                <p>
+                  Java, nesne yönelimli (Object-Oriented) bir programlama dilidir. "Bir kez yaz, her yerde çalıştır" sloganıyla bilinir, çünkü Java Virtual Machine (JVM) sayesinde her işletim sisteminde sorunsuz çalışır. Mobil (Android), kurumsal ve masaüstü uygulamalar için sıklıkla tercih edilir.
+                </p>
+                <p>
+                  **1. Sınıflar ve Ana Metot**<br>
+                  Java'da her şey bir sınıf (`class`) içinde tanımlanır. Programın başlangıç noktası her zaman `main` metodudur.
+                </p>
+                <pre><code>public class IlkProgramim {
+    public static void main(String[] args) {
+        System.out.println("Merhaba Dünya!");
+    }
+}</code></pre>
+                <div class="output">
+                  Merhaba Dünya!
+                </div>
+                <p>
+                  **2. Değişkenler ve Veri Tipleri**<br>
+                  Java'da değişken tanımlarken veri tipini belirtmek zorunludur.
+                </p>
+                <pre><code>// String (Metin)
+String isim = "DXLES";
+
+// int (Tam sayı)
+int yas = 15;
+
+// double (Ondalıklı sayı)
+double puan = 95.5;
+
+System.out.println("Kullanıcı Adı: " + isim);
+System.out.println("Yaşı: " + yas);</code></pre>
+                <div class="output">
+                  Kullanıcı Adı: DXLES
+                  Yaşı: 15
+                </div>
+              </div>
+            </div>
+
+            <div class="education-qa-item">
+              <div class="question"><span>Java: Koşullu İfadeler ve Döngüler</span><span class="toggle-icon">+</span></div>
+              <div class="answer">
+                <p>
+                  Java'da program akışını kontrol etmek için koşullu ifadeler (`if`, `else`) ve döngüler (`for`, `while`) kullanılır.
+                </p>
+                <p>
+                  **1. Koşullu İfadeler**<br>
+                  `if` ve `else` blokları, belirli bir koşulun doğru olup olmadığına göre farklı kod bloklarını çalıştırmayı sağlar.
+                </p>
+                <pre><code>int not = 75;
+
+if (not >= 50) {
+    System.out.println("Geçtiniz.");
+} else {
+    System.out.println("Kaldınız.");
+}</code></pre>
+                <div class="output">
+                  Geçtiniz.
+                </div>
+                <p>
+                  **2. `for` Döngüsü**<br>
+                  `for` döngüsü, belirli sayıda tekrarlamalar için kullanılır.
+                </p>
+                <pre><code>for (int i = 1; i <= 5; i++) {
+    System.out.println("Sayı: " + i);
+}</code></pre>
+                <div class="output">
+                  Sayı: 1
+                  Sayı: 2
+                  Sayı: 3
+                  Sayı: 4
+                  Sayı: 5
+                </div>
+              </div>
+            </div>
+
+            <div class="education-qa-item">
+              <div class="question"><span>Java: Nesneler ve Kalıtım</span><span class="toggle-icon">+</span></div>
+              <div class="answer">
+                <p>
+                  Java, nesne yönelimli bir dil olduğu için programlar nesnelerden oluşur. Nesneler, sınıfların örnekleridir.
+                </p>
+                <p>
+                  **1. Nesne Oluşturma**<br>
+                  Önce bir `Araba` sınıfı tanımlayalım ve ardından ondan bir nesne oluşturalım.
+                </p>
+                <pre><code>public class Araba {
+    String renk;
+    int hiz;
+
+    public Araba(String r, int h) {
+        renk = r;
+        hiz = h;
+    }
+}
+
+// Main metot içinde nesne oluşturma
+Araba bmw = new Araba("Siyah", 250);
+System.out.println("Arabanın rengi: " + bmw.renk);</code></pre>
+                <div class="output">
+                  Arabanın rengi: Siyah
+                </div>
+                <p>
+                  **2. Kalıtım (`Inheritance`)**<br>
+                  Kalıtım, bir sınıfın başka bir sınıftan özelliklerini ve metotlarını miras almasıdır. Bu, kod tekrarını önler.
+                </p>
+                <pre><code>// Superclass (üst sınıf)
+class Hayvan {
+    void sesCikar() {
+        System.out.println("Bilinmeyen bir ses.");
+    }
+}
+
+// Subclass (alt sınıf)
+class Kopek extends Hayvan {
+    @Override
+    void sesCikar() {
+        System.out.println("Hav Hav!");
+    }
+}
+
+// Main metot içinde kullanım
+Kopek benimKopegim = new Kopek();
+benimKopegim.sesCikar();</code></pre>
+                <div class="output">
+                  Hav Hav!
+                </div>
+              </div>
+            </div>
+
+            <div class="education-qa-item">
+              <div class="question"><span>HTML'e Giriş: Web Sayfasının İskeleti</span><span class="toggle-icon">+</span></div>
+              <div class="answer">
+                <p>
+                  HTML (HyperText Markup Language), web sayfalarını oluşturmak için kullanılan bir işaretleme dilidir. Programlama dili değildir; bir web sayfasının iskeletini, yani metinlerin, resimlerin ve linklerin nerede duracağını belirler. Tarayıcın bu kodları okuyarak sayfayı görselleştirir.
+                </p>
+                <p>
+                  **1. Etiketler (`Tags`) ve Yapı**<br>
+                  HTML, "etiketler" adı verilen yapılarla çalışır. Çoğu etiket bir açılış (`<etiket>`) ve bir kapanış (`</etiket>`) etiketinden oluşur.
+                </p>
+                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Sayfamın Başlığı&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Ana Başlık&lt;/h1&gt;
+  &lt;p&gt;Bu bir paragraf.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                <p>
+                  **2. Önemli Etiketler**<br>
+                  * **`<h1>` - `<h6>`**: Başlık oluşturmak için kullanılır. `<h1>` en büyük, `<h6>` en küçük başlıktır.
+                  * **`<p>`**: Paragraf oluşturur.
+                  * **`<ul>` ve `<li>`**: Sırasız liste (madde işaretli liste) oluşturur.
+                </p>
+                <pre><code>&lt;ul&gt;
+  &lt;li&gt;HTML öğren&lt;/li&gt;
+  &lt;li&gt;CSS öğren&lt;/li&gt;
+  &lt;li&gt;JavaScript öğren&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+                <p>
+                  * **`<a>`**: Bir sayfaya veya kaynağa link vermek için kullanılır.
+                </p>
+                <pre><code>&lt;a href="https://www.google.com"&gt;Google'a Git&lt;/a&gt;</code></pre>
+                <p>
+                  * **`<img>`**: Web sayfasına resim eklemek için kullanılır.
+                </p>
+                <pre><code>&lt;img src="resim.jpg" alt="Açıklama"&gt;</code></pre>
+              </div>
+            </div>
+
+            <div class="education-qa-item">
+              <div class="question"><span>C++'a Giriş: Güç ve Performans</span><span class="toggle-icon">+</span></div>
+              <div class="answer">
+                <p>
+                  C++, sistem programlama, oyun geliştirme, yüksek performans gerektiren uygulamalar ve gömülü sistemler gibi alanlarda kullanılan, çok güçlü ve hızlı bir dildir. C++'ı öğrenmek biraz daha zor olsa da, donanım üzerinde tam kontrol sağlar.
+                </p>
+                <p>
+                  **1. Kütüphane Dahil Etme: `#include`**<br>
+                  C++'da bir fonksiyonu kullanmak için o fonksiyonun bulunduğu kütüphaneyi programa dahil etmemiz gerekir. `#include` komutu bunu sağlar.
+                </p>
+                <pre><code>#include &lt;iostream&gt; // Giriş/çıkış işlemleri için</code></pre>
+                <p>
+                  **2. Çıktı Verme: `std::cout`**<br>
+                  Ekrana metin yazdırmak için `iostream` kütüphanesinden gelen `std::cout` nesnesini kullanırız. `<<` operatörü ile yazdırmak istediğimiz veriyi `cout`'a aktarırız.
+                </p>
+                <pre><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout << "Merhaba Dünya!";
+    return 0;
+}</code></pre>
+                <div class="output">
+                  Merhaba Dünya!
+                </div>
+                <p>
+                  **3. Değişkenler**<br>
+                  Java gibi, C++'da da değişken tanımlarken tipini belirtmek zorunludur.
+                </p>
+                <pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt; // Metin değişkeni için
+
+int main() {
+    // Tam sayı
+    int yas = 25;
+
+    // Metin
+    std::string ad = "DXLES";
+
+    std::cout << "Adınız: " << ad << std::endl;
+    std::cout << "Yaşınız: " << yas << std::endl;
+    return 0;
+}</code></pre>
+                <div class="output">
+                  Adınız: DXLES
+                  Yaşınız: 25
+                </div>
+              </div>
+            </div>
+
+            <div class="education-qa-item">
+              <div class="question"><span>C++: Diziler ve Fonksiyonlar</span><span class="toggle-icon">+</span></div>
+              <div class="answer">
+                <p>
+                  C++'da verileri düzenlemek için diziler (`arrays`) kullanılır ve kod tekrarını önlemek için fonksiyonlar oluşturulur.
+                </p>
+                <p>
+                  **1. Diziler**<br>
+                  Diziler, aynı veri tipindeki birden çok öğeyi sıralı olarak saklayan veri yapılarıdır.
+                </p>
+                <pre><code>#include &lt;iostream&gt;
+
+int main() {
+    // 5 elemanlı bir tam sayı dizisi oluşturma
+    int sayilar[5] = {10, 20, 30, 40, 50};
+
+    // Dizinin 3. elemanını (indeks 2) ekrana yazdırma
+    std::cout << "Dizinin 3. elemanı: " << sayilar[2] << std::endl;
+    return 0;
+}</code></pre>
+                <div class="output">
+                  Dizinin 3. elemanı: 30
+                </div>
+                <p>
+                  **2. Fonksiyonlar**<br>
+                  C++'da bir fonksiyon, bir görevi yerine getiren ve programı daha düzenli hale getiren bir kod bloğudur.
+                </p>
+                <pre><code>#include &lt;iostream&gt;
+
+// Toplama işlemi yapan bir fonksiyon
+int topla(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int sonuc = topla(15, 7);
+    std::cout << "Toplam: " << sonuc << std::endl;
+    return 0;
+}</code></pre>
+                <div class="output">
+                  Toplam: 22
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <div class="spacer"></div>
+      </section>
+
+      <section id="commentsPage" class="pageSection">
+        <div class="panel">
+          <h3 style="color:#ff0044;font-family:'Orbitron';margin-bottom:10px">Yorumlar</h3>
+          <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start">
+            <div style="flex:1;min-width:260px">
+              <div class="commentBox">
+                <h4 style="margin-top:0;">Yorumunu Bırak</h4>
+                <input id="commentName" placeholder="Kullanıcı adın" />
+                <textarea id="commentText" rows="4" placeholder="Yorumun..."></textarea>
+                <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+                  <button class="btn" id="postComment">Gönder</button>
+                  <div class="smallMuted">Yorumlar anında eklenir.</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1.4;min-width:260px">
+              <div id="commentList" style="display:flex;flex-direction:column;gap:12px;padding-left:6px">
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+      </section>
+
+      <section id="contactPage" class="pageSection">
+        <div class="panel">
+          <h3 style="color:#ff0044;font-family:'Orbitron';margin-bottom:10px">İletişim</h3>
+          <p>Instagram: <a href="https://www.instagram.com/2dxly" target="_blank"><strong>@2dxly</strong></a>, <a href="https://www.instagram.com/aetherx1_" target="_blank"><strong>@aetherx1_</strong></a></p>
+          <p>Telegram: <a href="https://t.me/Qyptx" target="_blank"><strong>@Qyptx</strong></a></p>
+          <p>E-posta: <a href="mailto:Dxxlxdxxx@gmail.com" target="_blank"><strong>Dxxlxdxxx@gmail.com</strong></a></p>
+          <p>LinkedIn: <a href="https://www.linkedin.com/in/dxles" target="_blank"><strong>DXLES</strong></a></p>
+          <p class="smallMuted">(Bu linkleri istediğin linklerle değiştirebilirsin.)</p>
+        </div>
+        <div class="spacer"></div>
+      </section>
+      
+    </main>
   </div>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
-<script>
+  <script>
     /* ============================
        GLOBALS
        ============================ */
@@ -319,49 +929,67 @@
     /* ============================
        ÇOK ÖNEMLİ! GÜVENLİK UYARISI
        ============================ */
+    // Bu kod sadece demo amaçlıdır. Kullanıcı verileri tarayıcının yerel hafızasında (localStorage) saklanır.
+    // Bu yöntem gerçek bir web sitesinde ASLA kullanılmamalıdır çünkü güvenli DEĞİLDİR ve
+    // tarayıcılar arası veya cihazlar arası kalıcı veri saklamaz.
+    // Şifreler şifrelenmeden saklanır. Bu bir güvenlik açığıdır.
+    
     const USERS_KEY = 'dxles-demo-users';
-
-    function loadUsers() {
-      let users = JSON.parse(localStorage.getItem(USERS_KEY));
-      if (!users) {
-        users = {
-          "dxl3s": { password: "dxlesxmary", securityQuestion: "En sevdiğin renk?" },
-          "kuzen": { password: "1234", securityQuestion: "İlk evcil hayvanının adı?" }
-        };
-        localStorage.setItem(USERS_KEY, JSON.stringify(users));
-      }
-      return users;
+    
+    function loadUsers(){
+        let users = JSON.parse(localStorage.getItem(USERS_KEY));
+        if(!users) {
+            users = {
+                "dxl3s": { password: "dxlesxmary", securityQuestion: "En sevdiğin renk?" },
+                "yazilimci": { password: "1234", securityQuestion: "İlk evcil hayvanının adı?" }
+            };
+            localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        }
+        return users;
     }
 
     let users = loadUsers();
 
-    function saveUsers() {
-      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    function saveUsers(){
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
     }
 
     /* ============================
        SEQUENCE:
-       1) show login OR AI override
-       2) on login -> show midload (2.5s) while globe visible
-       3) then show app
+       1) show intro for 1.6s
+       2) show login OR AI override
+       3) on login -> show midload (2.5s) while globe visible
+       4) then show app
        ============================ */
+
     const params = new URLSearchParams(window.location.search);
     const isAIOverride = params.get('ai') === 'true';
 
-    // helper to show mid loader
-    function startMidLoadAndEnter(username, pageId = 'homePage') {
-      if (login) login.style.display = 'none';
-      if (midload) midload.style.display = 'flex';
-      if (displayUser) displayUser.textContent = username;
+    // after page load, hide intro -> show login OR AI override
+    setTimeout(()=> {
+      intro.style.display = 'none';
+      if (isAIOverride) {
+        startMidLoadAndEnter('AI User', 'aboutPage');
+      } else {
+        login.style.display = 'flex';
+        userInput.focus();
+      }
+    }, 1600); // initial intro duration
 
-      if (username && username.trim().length > 0) {
-        const initials = username.trim().split(' ').map(s => s[0]).slice(0, 2).join('').toUpperCase();
-        if (avatarImg) avatarImg.src = generateInitialsDataURL(initials);
+    // helper to show mid loader
+    function startMidLoadAndEnter(username, pageId = 'homePage'){
+      login.style.display = 'none';
+      midload.style.display = 'flex';
+      displayUser.textContent = username;
+
+      if(username && username.trim().length > 0){
+        const initials = username.trim().split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+        avatarImg.src = generateInitialsDataURL(initials);
       }
 
-      setTimeout(() => {
-        if (midload) midload.style.display = 'none';
-        if (app) app.style.display = 'block';
+      setTimeout(()=> {
+        midload.style.display = 'none';
+        app.style.display = 'block';
         document.body.style.overflow = 'auto';
         showPage(pageId);
         startTypingEffect();
@@ -369,38 +997,35 @@
     }
 
     // login click
-    if (doLoginBtn) {
-      doLoginBtn.addEventListener('click', () => {
-        const username = userInput.value.trim();
-        const password = passwordInput.value.trim();
-        if (users[username] && users[username].password === password) {
-          startMidLoadAndEnter(username || 'Ziyaretçi');
-        } else {
-          alert("Yanlış kullanıcı adı veya şifre!");
-        }
-      });
-    }
+    doLoginBtn.addEventListener('click', ()=>{
+      const username = userInput.value.trim();
+      const password = passwordInput.value.trim();
+      if(users[username] && users[username].password === password){
+        startMidLoadAndEnter(username || 'Ziyaretçi');
+      } else {
+        alert("Yanlış kullanıcı adı veya şifre!");
+      }
+    });
 
     // signup click
-    if (signupBtn) {
-      signupBtn.addEventListener('click', () => {
+    signupBtn.addEventListener('click', () => {
         const username = userInput.value.trim();
         const password = passwordInput.value.trim();
 
         if (username.length < 3 || password.length < 3) {
-          alert("Kullanıcı adı ve şifre en az 3 karakter olmalı.");
-          return;
+            alert("Kullanıcı adı ve şifre en az 3 karakter olmalı.");
+            return;
         }
 
         if (users[username]) {
-          alert("Bu kullanıcı adı zaten mevcut.");
-          return;
+            alert("Bu kullanıcı adı zaten mevcut.");
+            return;
         }
 
         const securityQuestion = prompt("Güvenlik sorusunu yazın (ör: İlk evcil hayvanının adı?):");
         if (!securityQuestion || securityQuestion.length < 5) {
-          alert("Güvenlik sorusu en az 5 karakter olmalı. Hesap oluşturulamadı.");
-          return;
+            alert("Güvenlik sorusu en az 5 karakter olmalı. Hesap oluşturulamadı.");
+            return;
         }
 
         users[username] = { password, securityQuestion };
@@ -408,82 +1033,65 @@
         alert("Hesap başarıyla oluşturuldu! Şimdi giriş yapabilirsiniz.");
         userInput.value = '';
         passwordInput.value = '';
-      });
-    }
+    });
 
     // forgot password click
-    if (forgotPasswordLink) {
-      forgotPasswordLink.addEventListener('click', (e) => {
+    forgotPasswordLink.addEventListener('click', (e) => {
         e.preventDefault();
         const username = prompt("Şifresini sıfırlamak istediğin kullanıcı adını gir:");
         if (!username) return;
 
         const user = users[username];
         if (!user) {
-          alert("Kullanıcı bulunamadı.");
-          return;
+            alert("Kullanıcı bulunamadı.");
+            return;
         }
 
         const answer = prompt(user.securityQuestion);
         if (answer) {
-          const newPassword = prompt("Yeni şifreni gir:");
-          if (newPassword && newPassword.length >= 3) {
-            users[username].password = newPassword;
-            saveUsers();
-            alert("Şifren başarıyla güncellendi! Giriş yapabilirsin.");
-          } else {
-            alert("Yeni şifre en az 3 karakter olmalı. İşlem iptal edildi.");
-          }
+            const newPassword = prompt("Yeni şifreni gir:");
+            if (newPassword && newPassword.length >= 3) {
+                users[username].password = newPassword;
+                saveUsers();
+                alert("Şifren başarıyla güncellendi! Giriş yapabilirsin.");
+            } else {
+                alert("Yeni şifre en az 3 karakter olmalı. İşlem iptal edildi.");
+            }
         } else {
-          alert("Güvenlik sorusunu doğru cevaplamadın. İşlem iptal edildi.");
+            alert("Güvenlik sorusunu doğru cevaplamadın. İşlem iptal edildi.");
         }
-      });
-    }
+    });
 
     // logout: reset to login overlay
-    if (logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
-        if (app) app.style.display = 'none';
-        if (login) login.style.display = 'flex';
-        if (userInput) userInput.value = '';
-        if (passwordInput) passwordInput.value = '';
-        if (displayUser) displayUser.textContent = 'Ziyaretçi';
-        if (typingAnswer) typingAnswer.textContent = '...';
-        document.body.style.overflow = 'hidden';
-        if (avatarImg) avatarImg.src = 'https://via.placeholder.com/180x180.png?text=DXLES';
-      });
-    }
+    logoutBtn.addEventListener('click', ()=>{
+      app.style.display = 'none';
+      login.style.display = 'flex';
+      userInput.value = '';
+      passwordInput.value = '';
+      displayUser.textContent = 'Ziyaretçi';
+      typingAnswer.textContent = '...';
+      document.body.style.overflow = 'hidden';
+      avatarImg.src = 'https://via.placeholder.com/180x180.png?text=DXLES';
+    });
 
     // Page navigation function
     function showPage(pageId) {
-      if (pages) {
-        pages.forEach(page => {
-          page.style.display = 'none';
-        });
-        const selectedPage = document.getElementById(pageId);
-        if (selectedPage) {
-          selectedPage.style.display = 'block';
-        }
-      }
+      pages.forEach(page => {
+        page.style.display = 'none';
+      });
+      document.getElementById(pageId).style.display = 'block';
     }
-
-    // Home page link
-    document.querySelector('a[onclick*="homePage"]').addEventListener('click', (e) => {
-        e.preventDefault();
-        showPage('homePage');
-    });
 
     /* ============================
        TYPING ANIMATION (GPT-like answer)
        ============================ */
     const answerText = "Ben Dxles. Türkiye merkezli yazılım geliştiricisiyim — frontend, backend ve yapay zekâ ile uğraşıyorum. Deneyler, projeler ve bazı karanlık meraklarım var. Bu sayfa benim kısa bio'um; buraya benim hakkımda sorular ve placeholder yorumlar eklenir.";
-    function startTypingEffect() {
-      if (!typingAnswer) return;
+    function startTypingEffect(){
       typingAnswer.textContent = '';
-      let i = 0;
+      let i=0;
       const speed = 18;
-      const interval = setInterval(() => {
-        if (i < answerText.length) {
+      const interval = setInterval(()=>{
+        if(i < answerText.length){
           typingAnswer.textContent += answerText.charAt(i);
           i++;
         } else {
@@ -495,71 +1103,70 @@
     /* ============================
        ACCORDION (Q&A) Logic
        ============================ */
-    if (qaItems) {
-      qaItems.forEach(item => {
+    qaItems.forEach(item => {
         item.addEventListener('click', () => {
-          const isOpen = item.classList.contains('open');
-          qaItems.forEach(i => i.classList.remove('open'));
-          if (!isOpen) {
-            item.classList.add('open');
-          }
+            const isOpen = item.classList.contains('open');
+            // Close all first
+            qaItems.forEach(i => i.classList.remove('open'));
+            // Toggle the clicked one
+            if (!isOpen) {
+                item.classList.add('open');
+            }
         });
-      });
-    }
+    });
 
     /* ============================
        ACCORDION (EDUCATION) Logic
        ============================ */
-    if (educationItems) {
-      educationItems.forEach(item => {
+    educationItems.forEach(item => {
         item.addEventListener('click', () => {
-          const isOpen = item.classList.contains('open');
-          educationItems.forEach(i => i.classList.remove('open'));
-          if (!isOpen) {
-            item.classList.add('open');
-          }
+            const isOpen = item.classList.contains('open');
+            // Close all first
+            educationItems.forEach(i => i.classList.remove('open'));
+            // Toggle the clicked one
+            if (!isOpen) {
+                item.classList.add('open');
+            }
         });
-      });
-    }
+    });
+
 
     /* ============================
        YORUMLAR (Comments) Logic
        ============================ */
-    if (postCommentBtn) {
-      postCommentBtn.addEventListener('click', () => {
-        const name = (commentName.value.trim() || 'Anonim').slice(0, 30);
-        const text = (commentText.value.trim() || '...').slice(0, 800);
+    postCommentBtn.addEventListener('click', ()=>{
+      const name = (commentName.value.trim() || 'Anonim').slice(0,30);
+      const text = (commentText.value.trim() || '...').slice(0,800);
+      
+      if(name && text) {
+        const el = document.createElement('div');
+        el.className = 'comment-list-item';
+        el.innerHTML = `<div class="author">${escapeHtml(name)}</div><div class="text">${escapeHtml(text)}</div>`;
+        commentList.prepend(el);
+        commentName.value=''; 
+        commentText.value='';
+      }
+    });
 
-        if (name && text) {
-          const el = document.createElement('div');
-          el.className = 'comment-list-item';
-          el.innerHTML = `<div class="author">${escapeHtml(name)}</div><div class="text">${escapeHtml(text)}</div>`;
-          if (commentList) commentList.prepend(el);
-          if (commentName) commentName.value = '';
-          if (commentText) commentText.value = '';
-        }
-      });
-    }
-
-    function escapeHtml(s) {
-      return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    function escapeHtml(s){
+      return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     }
 
     /* ============================
        UTILS: generate initials avatar
        ============================ */
-    function generateInitialsDataURL(initials) {
+    function generateInitialsDataURL(initials){
       const size = 480;
       const c = document.createElement('canvas');
       c.width = c.height = size;
       const ctx = c.getContext('2d');
-      const g = ctx.createLinearGradient(0, 0, size, size);
-      g.addColorStop(0, '#0f0f0f');
-      g.addColorStop(1, '#070707');
+      const g = ctx.createLinearGradient(0,0,size,size);
+      g.addColorStop(0,'#0f0f0f');
+      g.addColorStop(1,'#070707');
       ctx.fillStyle = g;
-      ctx.fillRect(0, 0, size, size);
+      ctx.fillRect(0,0,size,size);
       ctx.beginPath();
-      ctx.arc(size / 2, size / 2, size / 2 - 12, 0, Math.PI * 2);
+      ctx.arc(size/2,size/2,size/2 - 12,0,Math.PI*2);
       ctx.lineWidth = 24;
       ctx.strokeStyle = 'rgba(255,0,68,0.12)';
       ctx.stroke();
@@ -567,11 +1174,11 @@
       ctx.font = 'bold 180px "Orbitron", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(initials, size / 2, size / 2 - 8);
+      ctx.fillText(initials, size/2, size/2 - 8);
       ctx.globalAlpha = 0.06;
       ctx.fillStyle = '#fff';
-      for (let i = 0; i < 1500; i++) {
-        ctx.fillRect(Math.random() * size, Math.random() * size, 1, 1);
+      for(let i=0;i<1500;i++){
+        ctx.fillRect(Math.random()*size, Math.random()*size, 1,1);
       }
       return c.toDataURL('image/png');
     }
@@ -580,221 +1187,256 @@
        3D GLOBE using THREE.js
        ============================ */
     const threeCanvas = document.getElementById('globeCanvas');
-    let renderer, scene, camera, globeGroup, solidMesh, wireMesh, latLines, points;
-    let attacks = [];
-    const rotationSpeed = 0.002;
+    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, antialias:true, alpha:true });
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
 
-    function initThree() {
-      if (!threeCanvas || typeof THREE === 'undefined') return;
-      renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, antialias: true, alpha: true });
-      renderer.setPixelRatio(window.devicePixelRatio || 1);
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(0x000000, 0);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0,0,22);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.15));
+    const globeGroup = new THREE.Group();
+    scene.add(globeGroup);
 
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 0, 22);
-      scene.add(new THREE.AmbientLight(0xffffff, 0.15));
-      globeGroup = new THREE.Group();
-      scene.add(globeGroup);
+    // Load texture for countries
+    const textureLoader = new THREE.TextureLoader();
+    const mapTexture = textureLoader.load('https://i.imgur.com/rW71261.png');
 
-      const textureLoader = new THREE.TextureLoader();
-      const mapTexture = textureLoader.load('rW71261.png');
+    const geomSolid = new THREE.SphereGeometry(8, 64, 64);
+    const matSolid = new THREE.MeshPhongMaterial({
+      color: 0x080808,
+      shininess: 2,
+      specular: 0x111111,
+      emissive: 0x001122,
+      emissiveIntensity: 0.02,
+      transparent:true,
+      opacity:0.95,
+      map: mapTexture // Use map texture on the solid globe
+    });
+    const solidMesh = new THREE.Mesh(geomSolid, matSolid);
+    globeGroup.add(solidMesh);
 
-      const geomSolid = new THREE.SphereGeometry(8, 64, 64);
-      const matSolid = new THREE.MeshPhongMaterial({
-        color: 0x080808,
-        shininess: 2,
-        specular: 0x111111,
-        emissive: 0x001122,
-        emissiveIntensity: 0.02,
-        transparent: true,
-        opacity: 0.95,
-        map: mapTexture
-      });
-      solidMesh = new THREE.Mesh(geomSolid, matSolid);
-      globeGroup.add(solidMesh);
+    const geomWire = new THREE.SphereGeometry(8.02, 128, 128);
+    const wireMat = new THREE.MeshBasicMaterial({ color: 0xff0044, wireframe: true, transparent: true, opacity:0.75 });
+    const wireMesh = new THREE.Mesh(geomWire, wireMat);
+    globeGroup.add(wireMesh);
 
-      const geomWire = new THREE.SphereGeometry(8.02, 128, 128);
-      const wireMat = new THREE.MeshBasicMaterial({ color: 0xff0044, wireframe: true, transparent: true, opacity: 0.75 });
-      wireMesh = new THREE.Mesh(geomWire, wireMat);
-      globeGroup.add(wireMesh);
-
-      latLines = new THREE.Group();
-      const latMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.25 });
-      for (let lat = -70; lat <= 70; lat += 10) {
-        const r = 8 * Math.cos(THREE.Math.degToRad(lat));
-        const y = 8 * Math.sin(THREE.Math.degToRad(lat));
-        const segments = 256;
-        const latGeom = new THREE.BufferGeometry();
-        const positions = new Float32Array((segments + 1) * 3);
-        for (let i = 0; i <= segments; i++) {
-          const theta = (i / segments) * Math.PI * 2;
-          positions[i * 3 + 0] = r * Math.cos(theta);
-          positions[i * 3 + 1] = y;
-          positions[i * 3 + 2] = r * Math.sin(theta);
-        }
-        latGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const line = new THREE.Line(latGeom, latMaterial.clone());
-        line.material.opacity = 0.1 + Math.random() * 0.12;
-        latLines.add(line);
+    const latLines = new THREE.Group();
+    const latMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent:true, opacity:0.25 });
+    for(let lat = -70; lat <= 70; lat += 10){
+      const r = 8 * Math.cos(THREE.Math.degToRad(lat));
+      const y = 8 * Math.sin(THREE.Math.degToRad(lat));
+      const segments = 256;
+      const latGeom = new THREE.BufferGeometry();
+      const positions = new Float32Array((segments+1)*3);
+      for(let i=0;i<=segments;i++){
+        const theta = (i/segments)*Math.PI*2;
+        positions[i*3+0] = r*Math.cos(theta);
+        positions[i*3+1] = y;
+        positions[i*3+2] = r*Math.sin(theta);
       }
-      globeGroup.add(latLines);
-
-      const ptsCount = 1200;
-      const ptsGeom = new THREE.BufferGeometry();
-      const ptsPositions = new Float32Array(ptsCount * 3);
-      for (let i = 0; i < ptsCount; i++) {
-        const phi = Math.acos(2 * Math.random() - 1);
-        const theta = 2 * Math.PI * Math.random();
-        const r = 8.1 + Math.random() * 0.3;
-        ptsPositions[i * 3 + 0] = r * Math.sin(phi) * Math.cos(theta);
-        ptsPositions[i * 3 + 1] = r * Math.cos(phi);
-        ptsPositions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
-      }
-      ptsGeom.setAttribute('position', new THREE.BufferAttribute(ptsPositions, 3));
-      const ptsMat = new THREE.PointsMaterial({ size: 0.06, color: 0xff0044, transparent: true, opacity: 0.8 });
-      points = new THREE.Points(ptsGeom, ptsMat);
-      globeGroup.add(points);
-
-      window.addEventListener('resize', onWindowResize);
+      latGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const line = new THREE.Line(latGeom, latMaterial.clone());
+      line.material.opacity = 0.1 + Math.random()*0.12;
+      latLines.add(line);
     }
+    globeGroup.add(latLines);
 
-    function onWindowResize() {
-      if (renderer && camera) {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-      }
+    const ptsCount = 1200;
+    const ptsGeom = new THREE.BufferGeometry();
+    const positions = new Float32Array(ptsCount*3);
+    for(let i=0;i<ptsCount;i++){
+      const phi = Math.acos(2*Math.random()-1);
+      const theta = 2*Math.PI*Math.random();
+      const r = 8.1 + Math.random()*0.3;
+      positions[i*3+0] = r*Math.sin(phi)*Math.cos(theta);
+      positions[i*3+1] = r*Math.cos(phi);
+      positions[i*3+2] = r*Math.sin(phi)*Math.sin(theta);
     }
+    ptsGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const ptsMat = new THREE.PointsMaterial({ size: 0.06, color: 0xff0044, transparent:true, opacity:0.8 });
+    const points = new THREE.Points(ptsGeom, ptsMat);
+    globeGroup.add(points);
 
     let mouseMoveCounter = 0;
+    const attacks = [];
+    const rotationSpeed = 0.002;
+
     function generateRandomPointOnSphere(radius) {
-      const phi = Math.acos(2 * Math.random() - 1);
-      const theta = 2 * Math.PI * Math.random();
-      return new THREE.Vector3(
-        radius * Math.sin(phi) * Math.cos(theta),
-        radius * Math.cos(phi),
-        radius * Math.sin(phi) * Math.sin(theta)
-      );
+        const phi = Math.acos(2 * Math.random() - 1);
+        const theta = 2 * Math.PI * Math.random();
+        return new THREE.Vector3(
+            radius * Math.sin(phi) * Math.cos(theta),
+            radius * Math.cos(phi),
+            radius * Math.sin(phi) * Math.sin(theta)
+        );
     }
 
     function createAttack() {
-      if (!globeGroup) return;
       const source = generateRandomPointOnSphere(8.1);
       const target = generateRandomPointOnSphere(8.1);
+
       const midPoint = new THREE.Vector3().lerpVectors(source, target, 0.5);
       const dist = source.distanceTo(target);
+
       const normal = midPoint.clone().normalize();
-      const controlPoint = midPoint.add(normal.multiplyScalar(dist * (0.5 + Math.random())));
-      const curve = new THREE.QuadraticBezierCurve3(source, controlPoint, target);
-      const curvePoints = curve.getPoints(50);
-      const attackColor = new THREE.Color();
-      if (Math.random() > 0.5) {
-        attackColor.setHex(0x00ffff);
-      } else {
-        attackColor.setHex(0xffa500); // Orange
-      }
-      const attackGeom = new THREE.BufferGeometry().setFromPoints(curvePoints);
-      const attackLine = new THREE.Line(
-        attackGeom,
-        new THREE.LineBasicMaterial({
-          color: attackColor,
-          transparent: true,
-          opacity: 0.8,
-          blending: THREE.AdditiveBlending
-        })
+      const randomOffset = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5).normalize();
+      const controlPoint = midPoint.add(randomOffset.multiplyScalar(dist*0.5));
+      
+      const curve = new THREE.QuadraticBezierCurve3(
+          source,
+          controlPoint,
+          target
       );
-      globeGroup.add(attackLine);
+      
+      const geometry = new THREE.BufferGeometry();
+      const material = new THREE.LineBasicMaterial({
+          color: 0x00ffff,
+          linewidth: 1,
+          transparent: true,
+          blending: THREE.AdditiveBlending
+      });
+      
+      const line = new THREE.Line(geometry, material);
+      globeGroup.add(line);
+      
       attacks.push({
-        line: attackLine,
+        line: line,
         curve: curve,
         progress: 0,
-        speed: 0.008 + Math.random() * 0.005,
+        speed: 0.015,
         life: 0,
-        maxLife: 120
+        maxLife: 200 + Math.random()*100
       });
     }
 
-    function burstAttack() {
-      for (let i = 0; i < 4 + Math.random() * 2; i++) {
-        createAttack();
-      }
-    }
+    // Add an event listener to the document for mouse move
+    document.addEventListener('mousemove', () => {
+        mouseMoveCounter++;
+        if (mouseMoveCounter >= 5) {
+            createAttack();
+            mouseMoveCounter = 0;
+        }
+    });
 
-    let attackInterval;
-    function startAttacks() {
-      if (!attackInterval) {
-        attackInterval = setInterval(burstAttack, 2500 + Math.random() * 2500);
-      }
-    }
-
-    window.addEventListener('mousemove', (ev) => {
-      mouseMoveCounter++;
-      if (mouseMoveCounter % 3 === 0) {
-        createAttack();
-        mouseMoveCounter = 0;
-      }
+    window.addEventListener('resize', ()=> {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
     });
 
     function animateThree() {
       requestAnimationFrame(animateThree);
-      if (globeGroup) {
-        globeGroup.rotation.y += rotationSpeed;
-      }
-
+      
+      // Kürenin sabit rotasyonu
+      globeGroup.rotation.y += rotationSpeed;
+      
+      // DDoS animasyonunu güncelle
       for (let i = attacks.length - 1; i >= 0; i--) {
         const attack = attacks[i];
         attack.progress += attack.speed;
+        
         if (attack.progress >= 1) {
-          attack.progress = 1;
+          attack.progress = 1; // Ensure it reaches the end
         }
+
         const animatedPoints = attack.curve.getPoints(50).slice(0, Math.floor(attack.progress * 50));
-        if (attack.line && attack.line.geometry) {
-          attack.line.geometry.setFromPoints(animatedPoints);
-        }
+        attack.line.geometry.setFromPoints(animatedPoints);
+        
         attack.life++;
-        if (attack.line && attack.line.material) {
-          attack.line.material.opacity = Math.max(0, 1 - (attack.life / attack.maxLife));
-        }
+        attack.line.material.opacity = Math.max(0, 1 - (attack.life / attack.maxLife));
+        
         if (attack.life > attack.maxLife) {
-          if (globeGroup && attack.line) {
             globeGroup.remove(attack.line);
-          }
-          attacks.splice(i, 1);
+            attacks.splice(i, 1);
         }
       }
 
-      if (renderer && scene && camera) {
-        renderer.render(scene, camera);
-      }
+      renderer.render(scene, camera);
+    }
+    animateThree();
+
+    /* ============================
+       EFFECTS CANVAS using JS
+       ============================ */
+    const eCanvas = document.getElementById('effectsCanvas');
+    const ectx = eCanvas.getContext('2d');
+    eCanvas.width = window.innerWidth;
+    eCanvas.height = window.innerHeight;
+
+    const arrows = [];
+    function spawnArrow(x,y){
+      arrows.push({
+        x: x,
+        y: y,
+        r: 1,
+        life: 1,
+        maxLife: 120,
+        vx: (Math.random()-0.5)*1.5,
+        vy: (Math.random()-0.5)*1.5,
+        targetR: 8 + Math.random()*10
+      });
     }
 
-    function init() {
-      if (intro) intro.style.display = 'none';
-      if (isAIOverride) {
-        startMidLoadAndEnter('AI User', 'aboutPage');
-      } else {
-        if (login) login.style.display = 'flex';
-        if (userInput) userInput.focus();
+    function drawEffects(){
+      eCanvas.width = window.innerWidth;
+      eCanvas.height = window.innerHeight;
+      ectx.clearRect(0,0, eCanvas.width, eCanvas.height);
+      
+      for(let i=arrows.length-1; i>=0; i--){
+        const a = arrows[i];
+        a.life--;
+        const alpha = a.life / a.maxLife;
+        a.r += (a.targetR - a.r) * 0.05;
+        a.x += a.vx;
+        a.y += a.vy;
+
+        ectx.beginPath();
+        ectx.arc(a.x, a.y, a.r, 0, Math.PI*2);
+        ectx.strokeStyle = 'rgba(255,0,68,' + alpha + ')';
+        ectx.lineWidth = 2.5;
+        ectx.stroke();
+        // draw triangular tip
+        ectx.beginPath();
+        ectx.moveTo(a.x + a.vx*6, a.y + a.vy*6);
+        ectx.lineTo(a.x + a.r + a.vx*6, a.y + a.vy*6 + 2);
+        ectx.lineTo(a.x + a.vx*6 + 2, a.y + a.vy*6 + a.r);
+        ectx.closePath();
+        ectx.fillStyle = 'rgba(255,0,68,' + (alpha*0.85) + ')';
+        ectx.fill();
+
+        if(a.life <= 0) arrows.splice(i,1);
       }
-
-      initThree();
-      animateThree();
-      startAttacks();
-      setCanvasDPR();
+      requestAnimationFrame(drawEffects);
     }
+    drawEffects();
 
-    function setCanvasDPR() {
-      if (renderer) {
-        const dpr = Math.min(2, window.devicePixelRatio || 1);
-        renderer.setPixelRatio(dpr);
+    /* ============================
+       INITIAL ARROW BURST (for midload visual)
+       ============================ */
+    (function initialBurst(){
+      for(let i=0;i<40;i++){
+        spawnArrow(window.innerWidth/2 + (Math.random()-0.5)*400, 50 + Math.random()*200);
       }
-    }
+    })();
 
-    document.addEventListener('DOMContentLoaded', init);
+    /* ============================
+       FINISH: enable scroll when app visible
+       ============================ */
+    // Initially hide app scrolling (we hide overflow until app visible)
     document.body.style.overflow = 'hidden';
-</script>
 
+    /* ============================
+       small helper: ensure canvas covers
+       ============================ */
+    window.addEventListener('resize', ()=> {
+      if(eCanvas){
+        eCanvas.width = window.innerWidth;
+        eCanvas.height = window.innerHeight;
+      }
+    });
+
+  </script>
 </body>
 </html>
