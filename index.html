@@ -21,710 +21,277 @@
        ------------------------- */
     canvas#globeCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;display:block}
     canvas#effectsCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:5;pointer-events:none}
+    #overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:10;transition:opacity .5s}
+    #intro{z-index:11;flex-direction:column;text-align:center;pointer-events:none}
+    #intro h1{font-family:"Orbitron",sans-serif;font-weight:700;font-size:2rem;color:#ff0044;text-shadow:0 0 10px #ff0044}
+    #intro p{color:#888;font-size:1rem;margin-top:10px}
+    #midload{z-index:12;flex-direction:column;text-align:center;pointer-events:none}
+    #midload h2{font-family:"Orbitron",sans-serif;font-weight:400;font-size:1.5rem;color:#fff}
+    #login{z-index:13;flex-direction:column;align-items:center;width:calc(100% - 40px);max-width:320px;padding:30px;background:rgba(20,20,20,0.85);border:1px solid rgba(255,255,255,0.1);border-radius:10px;text-align:center}
+    #login h2{font-family:"Orbitron",sans-serif;margin-bottom:20px;color:#fff}
+    #login input{width:100%;padding:12px;margin:8px 0;background:#222;border:1px solid #444;border-radius:5px;color:#fff;font-size:1rem;outline:none;transition:border-color .2s}
+    #login input:focus{border-color:#ff0044}
+    #login button{width:100%;padding:12px;margin-top:15px;background:#ff0044;color:#fff;border:none;border-radius:5px;font-size:1rem;font-weight:bold;cursor:pointer;transition:background-color .2s, transform .1s}
+    #login button:hover{background-color:#cc0033;transform:translateY(-1px)}
+    #login .small-links a{color:#bbb;font-size:0.8rem;margin:10px;display:inline-block;transition:color .2s}
+    #login .small-links a:hover{color:#fff}
 
     /* -------------------------
-       INTRO LOADER (first load)
+       APP CONTAINER
        ------------------------- */
-    .introOverlay{
-      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;
-      background:#000;z-index:200;gap:18px;
-      animation:introIn .6s ease forwards;
-    }
-    .introOverlay h1{
-      color:#ff0044;font-family:"Orbitron";font-size:28px;letter-spacing:3px;
-      text-transform:uppercase;text-align:center;
-      filter:drop-shadow(0 0 10px rgba(255,0,68,0.8));
-      animation:glitch 1.4s infinite;
-    }
-    .introOverlay p{color:#ccc;font-size:14px;opacity:.9}
-
-    @keyframes introIn {from{opacity:0}to{opacity:1}}
-    @keyframes glitch {
-      0%{text-shadow:2px 2px 0 rgba(255,0,68,0.7)}
-      20%{text-shadow:-2px -2px 0 rgba(0,255,255,0.5)}
-      40%{text-shadow:2px -2px 0 rgba(255,255,255,0.2)}
-      60%{text-shadow:-2px 2px 0 rgba(255,0,68,0.5)}
-      80%{text-shadow:2px 2px 0 rgba(0,255,255,0.3)}
-      100%{text-shadow:-2px -2px 0 rgba(255,0,68,0.7)}
-    }
+    #app{display:none;width:100%;height:100%;position:relative;z-index:2;overflow:hidden}
 
     /* -------------------------
-       LOGIN MODAL (username + password)
+       NAVBAR / HEADER
        ------------------------- */
-    .loginOverlay{
-      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:150;
-      background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.35));
-      backdrop-filter: blur(4px);
-    }
-    .loginCard{
-      width: min(520px, 92%);
-      background: linear-gradient(180deg, rgba(18,18,18,0.9), rgba(8,8,8,0.7));
-      border:1px solid rgba(255,0,68,0.12);
-      padding:28px;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,0.6);
-      display:flex;flex-direction:column;gap:14px;align-items:center;
-    }
-    .loginTitle{font-family:"Orbitron";font-size:20px;color:#ff0044;text-shadow:0 0 18px rgba(255,0,68,0.14)}
-    .loginHint{color:#aaa;font-size:13px;text-align:center}
-    .usernameInput, .passwordInput{
-      width:100%;max-width:380px;padding:12px 14px;border-radius:10px;
-      background:rgba(11, 11, 11, 0.9);
-      border:1px solid rgba(255,255,255,0.06);
-      color:#eee;font-size:16px;outline:none;
-      box-shadow: 0 0 8px rgba(255,0,68,0.03) inset;
-    }
-    .loginButtons{display:flex;gap:10px;width:100%;max-width:380px}
-    .btn{
-      flex:1;
-      padding:10px 16px;border-radius:10px;border:0;background:#ff0044;color:#fff;font-weight:700;cursor:pointer;
-      box-shadow:0 6px 22px rgba(255,0,68,0.14);transition:transform .14s ease,box-shadow .14s ease;
-    }
-    .btn:active{transform:translateY(1px)}
-    .btn-secondary{
-      flex:1;
-      padding:10px 16px;border-radius:10px;border:1px solid #00ffff;background:rgba(0,255,255,0.05);color:#00ffff;
-      box-shadow:0 6px 22px rgba(0,255,255,0.1);transition:transform .14s ease;cursor:pointer;
-      font-weight:700;
-    }
-    .btn-secondary:active{transform:translateY(1px)}
+    #navbar{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 25px;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);z-index:100}
+    #navbar .logo{font-family:"Orbitron",sans-serif;font-weight:700;font-size:1.5rem;color:#ff0044}
+    #navbar .nav-links a{margin-left:25px;font-size:1rem;color:#fff;opacity:.8;transition:opacity .2s,color .2s}
+    #navbar .nav-links a:hover{opacity:1;color:#ff0044}
+    #navbar .user-info{display:flex;align-items:center;gap:10px}
+    #navbar .user-info span{font-size:0.9rem;color:#ccc;white-space:nowrap}
+    #navbar .user-info button{background:none;border:1px solid #ff0044;color:#ff0044;padding:6px 12px;border-radius:5px;font-size:0.8rem;cursor:pointer;transition:background .2s,color .2s}
+    #navbar .user-info button:hover{background:#ff0044;color:#fff}
 
     /* -------------------------
-       SECOND LOADER (after login)
+       MAIN CONTENT / SECTIONS
        ------------------------- */
-    .midLoad{
-      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;
-      background:linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.2));z-index:160;backdrop-filter: blur(2px);
-    }
-    .midLoad .msg{
-      font-family:"Orbitron";font-size:22px;color:#00ffff;text-shadow:0 0 20px rgba(0,255,255,0.12);
-      display:flex;align-items:center;gap:12px;
-    }
-    .spinner{
-      width:46px;height:46px;border-radius:50%;border:4px solid rgba(255,255,255,0.06);
-      border-top-color:#ff0044;animation:spin 1s linear infinite;box-shadow:0 0 10px rgba(255,0,68,0.12);
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
+    .pageSection{display:none;padding:100px 20px 20px;max-width:900px;margin:0 auto;position:relative;z-index:2;height:100vh;overflow-y:auto}
+    .pageSection h1{font-family:"Orbitron",sans-serif;font-weight:700;font-size:2.5rem;text-align:center;margin-bottom:40px;color:#fff}
+    
+    /* Home Section */
+    .hero-text{text-align:center;margin-top:10vh}
+    .hero-text h2{font-family:"Orbitron",sans-serif;font-weight:400;font-size:2.5rem;color:#fff;text-shadow:0 0 10px rgba(255,255,255,0.2);margin-bottom:20px}
+    .hero-text .typing-container{min-height:100px;background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);padding:20px;border-radius:10px;line-height:1.6;font-size:1.1rem;white-space:pre-wrap;text-align:left;position:relative}
+    .hero-text .typing-cursor{font-weight:100;animation:blink-caret .75s step-end infinite;color:#ff0044}
+    @keyframes blink-caret{from,to{color:transparent}50%{color:#ff0044}}
 
-    /* -------------------------
-       APP LAYOUT (after loaded)
-       ------------------------- */
-    .app {
-      position:relative;z-index:20;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;
-      pointer-events:auto;overflow:auto;
-    }
-    header.appHeader{
-      position:fixed;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:center;z-index:30;
-      gap:10px;
-    }
-    .logoSmall{
-      display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(10,10,10,0.4));
-      border:1px solid rgba(255,0,68,0.06);
-      box-shadow:0 6px 20px rgba(0,0,0,0.6);
-    }
-    .logoSmall .dot{width:10px;height:10px;border-radius:50%;background:#ff0044;box-shadow:0 0 10px rgba(255,0,68,0.9)}
-    nav.topNav{display:flex;gap:10px;align-items:center;flex-wrap: wrap;justify-content:center;}
-    nav.topNav a, .logoutBtn, .backBtn {
-      padding:8px 12px;
-      border-radius:8px;
-      font-weight:700;
-      color:#ddd;
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.02);
-      transition: background .2s ease, transform .1s ease;
-      cursor: pointer;
-    }
-    nav.topNav a:hover, .backBtn:hover {
-      background:rgba(255,255,255,0.04);
-      transform: translateY(-2px);
-    }
-    .logoutBtn{
-      background:#ff0044;
-      color:#fff;
-      border:none;
-      box-shadow:0 6px 18px rgba(255,0,68,0.14);
-    }
-    .backBtn{
-      border:1px solid rgba(255,255,255,0.06);
-      background:rgba(255,255,255,0.02);
-    }
+    /* About Section */
+    .about-text{text-align:center;margin-bottom:40px;line-height:1.6;font-size:1.1rem}
+    .about-qa-item{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;margin-bottom:15px;cursor:pointer;transition:background-color .2s}
+    .about-qa-item:hover{background-color:rgba(30,30,30,0.8)}
+    .about-qa-item .question{padding:15px 20px;font-weight:bold;color:#fff;position:relative}
+    .about-qa-item .question:after{content:'+';position:absolute;right:20px;top:50%;transform:translateY(-50%);transition:transform .2s}
+    .about-qa-item.open .question:after{content:'-';transform:rotate(45deg)}
+    .about-qa-item .answer{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease-out,padding .3s ease-out}
+    .about-qa-item.open .answer{padding:15px 20px;max-height:500px}
+    .about-qa-item .answer p{color:#bbb;line-height:1.5}
 
-    /* -------------------------
-       PAGE SECTIONS
-       ------------------------- */
-    .pageSection {
-      display: none;
-      width: 100%;
-      height: 100%;
-      padding-top: 110px;
-      overflow-y: auto;
-    }
-    #homePage {
-      display: block; /* initial page */
-    }
+    /* Education Section */
+    .education-item{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;margin-bottom:15px;padding:15px 20px;position:relative}
+    .education-item h3{margin-bottom:5px;color:#ff0044}
+    .education-item p{color:#ccc;font-size:0.9rem}
 
-    /* -------------------------
-       PAGE SPECIFIC STYLES
-       ------------------------- */
-    .panel{
-      width:min(980px,94%);
-      background:linear-gradient(180deg, rgba(8,8,8,0.6), rgba(3,3,3,0.35));
-      padding:20px;
-      border-radius:12px;
-      border:1px solid rgba(255,0,68,0.06);
-      box-shadow:0 12px 40px rgba(0,0,0,0.6);
-      margin: 20px auto;
+    /* Projects Section */
+    .project-grid{display:grid;grid-template-columns:1fr;gap:20px}
+    @media (min-width: 600px){
+      .project-grid{grid-template-columns:1fr 1fr}
     }
+    .project-card{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;transition:transform .2s, box-shadow .2s}
+    .project-card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.3)}
+    .project-card img{width:80px;height:80px;margin-bottom:15px;border-radius:10px}
+    .project-card h3{color:#ff0044;margin-bottom:5px}
+    .project-card p{color:#bbb;font-size:0.9rem}
 
-    .avatar{
-      width:180px;height:180px;border-radius:50%;overflow:hidden;border:6px solid rgba(255,0,68,0.12);
-      display:grid;place-items:center;position:relative;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.15));
-      transform:translateY(0);transition:transform .35s cubic-bezier(.2,.9,.2,1),box-shadow .35s;
-      box-shadow:0 20px 50px rgba(0,0,0,0.6);
-    }
+    /* Blog Section */
+    .blog-post{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:20px;margin-bottom:20px}
+    .blog-post h3{color:#fff;margin-bottom:5px}
+    .blog-post .meta{color:#888;font-size:0.8rem;margin-bottom:10px}
+    .blog-post p{color:#bbb;line-height:1.5}
 
-    .welcome{
-      font-family:"Orbitron";font-size:28px;color:#ff0044;text-shadow:0 0 30px rgba(255,0,68,0.12);
-      transition:all .3s;
-    }
-    .about-qa-item, .education-qa-item {
-        margin-bottom: 20px;
-        padding: 15px;
-        border-radius: 8px;
-        background: rgba(15, 15, 15, 0.6);
-        border: 1px solid rgba(255, 0, 68, 0.2);
-        cursor: pointer;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 4px 10px rgba(255, 0, 68, 0.05), 0 0 20px rgba(255, 0, 68, 0.1);
-    }
-    .about-qa-item:hover, .education-qa-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(255, 0, 68, 0.15), 0 0 30px rgba(255, 0, 68, 0.2);
-    }
-    .about-qa-item .question, .education-qa-item .question {
-      font-family:"Orbitron";
-      color:#00ffff;
-      text-shadow: 0 0 10px rgba(0,255,255,0.5);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-    .about-qa-item .question .toggle-icon, .education-qa-item .question .toggle-icon {
-        font-size: 24px;
-        color: #ff0044;
-        transition: transform 0.3s ease;
-    }
-    .about-qa-item.open .question .toggle-icon, .education-qa-item.open .question .toggle-icon {
-        transform: rotate(45deg);
-    }
-    .about-qa-item .answer, .education-qa-item .answer {
-      color:#e8e8e8;
-      max-height:0;
-      overflow:hidden;
-      transition:max-height 0.5s ease-out, opacity 0.5s ease-out;
-      opacity:0;
-    }
-    .about-qa-item.open .answer, .education-qa-item.open .answer {
-        max-height: 2000px;
-        opacity:1;
-        margin-top: 10px;
-    }
-
-    .comment-list-item {
-        padding: 12px;
-        border-radius: 8px;
-        background: linear-gradient(180deg, rgba(12,12,12,0.6), rgba(6,6,6,0.4));
-        border: 1px solid rgba(255,255,255,0.03);
-        animation: fadeIn 0.5s ease-out;
-    }
-    .comment-list-item + .comment-list-item {
-        margin-top: 12px;
-    }
-    .comment-list-item .author {
-        font-weight:700;
-        color:#ff0044;
-    }
-    .comment-list-item .text {
-        margin-top: 6px;
-        color:#eee;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .education-qa-item pre {
-        background: rgba(0, 0, 0, 0.6);
-        border: 1px solid rgba(255, 0, 68, 0.1);
-        border-radius: 8px;
-        padding: 15px;
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 14px;
-        color: #ddd;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        overflow-x: auto;
-        box-shadow: 0 0 15px rgba(255, 0, 68, 0.1);
-        margin-top: 12px;
-    }
-
-    .education-qa-item p, .education-qa-item li {
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
-    .education-qa-item ul, .education-qa-item ol {
-      padding-left: 20px;
-      margin-bottom: 12px;
-    }
-    .education-qa-item pre {
-        margin-bottom: 12px;
-    }
-    #contactSection a {
-        display: inline-block;
-        padding: 8px 12px;
-        border-radius: 8px;
-        transition: text-shadow 0.3s ease, transform 0.3s ease;
-        text-shadow: 0 0 0 #ff0044;
-    }
-    #contactSection a:hover {
-        text-shadow: 0 0 20px #ff0044, 0 0 30px #00ffff;
-        transform: scale(1.05);
-    }
-
-    /* -------------------------
-       FOOTER SPACE
-       ------------------------- */
-    .spacer{height:80px}
-
-    /* -------------------------
-       RESPONSIVE
-       ------------------------- */
-    @media (max-width:720px){
-      .welcome{font-size:24px}
-      .avatar{width:160px;height:160px}
-      header.appHeader{
-        flex-direction:column;
-        align-items:center;
-        top:10px;
-        left:10px;
-        right:10px;
-        gap:10px;
-      }
-      nav.topNav{flex-wrap:wrap;justify-content:center}
+    /* Comments Section */
+    .comments-section{background:rgba(20,20,20,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:20px;margin-top:20px}
+    .comments-section h3{margin-bottom:15px;color:#fff}
+    .comment-form textarea, .comment-form input{width:100%;padding:10px;margin-bottom:10px;background:#222;border:1px solid #444;border-radius:5px;color:#fff;font-size:0.9rem;resize:vertical}
+    .comment-form button{background:#ff0044;color:#fff;border:none;padding:10px 15px;border-radius:5px;cursor:pointer}
+    .comment-list{margin-top:20px;border-top:1px solid rgba(255,255,255,0.1);padding-top:20px}
+    .comment-list-item{border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:15px;margin-bottom:15px}
+    .comment-list-item .author{font-weight:bold;color:#ff0044;margin-bottom:5px}
+    .comment-list-item .text{color:#ccc;line-height:1.5}
+    
+    /* Media Queries */
+    @media (max-width: 600px){
+      #navbar .logo{font-size:1.2rem}
+      #navbar .nav-links a{margin-left:15px;font-size:0.9rem}
+      .pageSection{padding-top:80px}
+      .pageSection h1{font-size:2rem}
+      .hero-text h2{font-size:2rem}
+      .hero-text .typing-container{font-size:1rem}
     }
   </style>
+
 </head>
 <body>
 
   <canvas id="globeCanvas"></canvas>
-
   <canvas id="effectsCanvas"></canvas>
-
-  <div id="intro" class="introOverlay" aria-hidden="false">
-    <h1>LOADING DXLES...</h1>
-    <p class="smallMuted">Boot sequence initializing — neon grid engaging</p>
-  </div>
-
-  <div id="login" class="loginOverlay" style="display:none">
-    <div class="loginCard" role="dialog" aria-label="Giriş">
-      <div class="loginTitle">DXLES — Giriş</div>
-      <div class="loginHint">Sadece yetkili personel.</div>
-      <input id="usernameInput" class="usernameInput" placeholder="Kullanıcı adın..." maxlength="28" />
-      <input id="passwordInput" class="passwordInput" type="password" placeholder="Şifre..." />
-      <div class="loginButtons">
-        <button class="btn" id="doLogin">Giriş Yap</button>
-        <button class="btn-secondary" id="signupBtn">Yeni Hesap</button>
-      </div>
-      <a href="#" id="forgotPasswordLink" style="color:#00ffff;font-size:12px;margin-top:8px">Şifremi unuttum</a>
+  
+  <div id="overlay">
+    
+    <div id="intro" style="display: none;">
+      <h1>DXLES</h1>
+      <p>Boot sequence initializing — neon grid engaging</p>
     </div>
-  </div>
-
-  <div id="midload" class="midLoad" style="display:none">
-    <div class="spinner" aria-hidden="true"></div>
-    <div class="msg">LOADING DXLES — initializing environment</div>
-  </div>
-
-  <div id="app" class="app" style="display:none;">
-
-    <header class="appHeader">
-      <div class="logoSmall">
-        <div class="dot"></div>
-        <div style="font-weight:700">DXLES</div>
+    
+    <div id="midload" style="display: none;">
+      <h2>LOADING DXLES — initializing environment</h2>
+    </div>
+    
+    <div id="login" style="display: none;">
+      <h2>SISTEME GİRİŞ</h2>
+      <input type="text" id="usernameInput" placeholder="Kullanıcı Adı" />
+      <input type="password" id="passwordInput" placeholder="Şifre" />
+      <button id="doLogin">GİRİŞ YAP</button>
+      <div class="small-links">
+        <a href="#" id="signupBtn">Kaydol</a>
+        <a href="#" id="forgotPasswordLink">Şifremi Unuttum</a>
       </div>
+    </div>
+    
+  </div>
 
-      <nav class="topNav" aria-label="menu">
-        <a href="#" onclick="showPage('homePage'); return false;">Anasayfa</a>
-        <a href="#" onclick="showPage('aboutPage'); return false;">Hakkımda (Q&A)</a>
-        <a href="#" onclick="showPage('educationPage'); return false;">Eğitim</a>
-        <a href="#" onclick="showPage('commentsPage'); return false;">Yorumlar</a>
-        <a href="#" onclick="showPage('contactPage'); return false;">İletişim</a>
-        <button class="logoutBtn" id="logout">Logout</button>
-        <button class="backBtn" onclick="window.history.back()">← Geri Dön</button>
-      </nav>
+  <div id="app">
+    
+    <header id="navbar">
+      <div class="logo">DXLES</div>
+      <div class="nav-links">
+        <a href="#" onclick="showPage('homePage')">ANA SAYFA</a>
+        <a href="#" onclick="showPage('aboutPage')">HAKKIMDA</a>
+        <a href="#" onclick="showPage('educationPage')">EĞİTİM</a>
+        <a href="#" onclick="showPage('projectsPage')">PROJELER</a>
+        <a href="#" onclick="showPage('blogPage')">BLOG</a>
+        <a href="#" onclick="showPage('contactPage')">İLETİŞİM</a>
+      </div>
+      <div class="user-info">
+        <img id="avatarImg" src="https://via.placeholder.com/180x180.png?text=DXLES" style="width: 32px; height: 32px; border-radius: 50%;">
+        <span id="displayUser">Ziyaretçi</span>
+        <button id="logout">Çıkış</button>
+      </div>
     </header>
 
-    <main>
-      <section id="homePage" class="pageSection">
-        <div class="heroWrap" style="display:flex; flex-direction:column; align-items:center; gap:18px; min-height:60vh; padding:20px; z-index:10; margin-top:110px;">
-          <div class="avatar" title="DXLES avatar (hover)">
-            <img id="avatarImg" src="https://via.placeholder.com/180x180.png?text=DXLES" alt="DXLES">
-          </div>
-          <div class="welcome">Hoşgeldin, <span id="displayUser">Ziyaretçi</span></div>
-          <div class="typingBox panel" id="typingBox">
-            <div class="q">Dxles kimdir?</div>
-            <div class="a" id="typingAnswer">...</div>
-          </div>
+    <section id="homePage" class="pageSection active-page">
+      <div class="hero-text">
+        <h2>DXLES</h2>
+        <div class="typing-container">
+          <span id="typingAnswer">...</span>
+          <span class="typing-cursor">|</span>
         </div>
-        <div class="spacer"></div>
-      </section>
+      </div>
+    </section>
 
-      <section id="aboutPage" class="pageSection">
-        <div class="panel">
-          <h3 style="color:#ff0044;font-family:'Orbitron';margin-bottom:10px">Hakkımda (Soru-Cevap)</h3>
-          <div style="display:flex; flex-direction:column; gap:16px;">
-            <div class="about-qa-item">
-              <div class="question"><span>Soru: DXLES kimdir?</span><span class="toggle-icon">+</span></div>
-              <div class="answer">Ben Dxles. Türkiye merkezli yazılım geliştiricisiyim — frontend, backend ve yapay zekâ ile uğraşıyorum. Deneyler, projeler ve bazı karanlık meraklarım var.</div>
-            </div>
-            <div class="about-qa-item">
-              <div class="question"><span>Soru: Hangi teknolojilerle çalışıyorsun?</span><span class="toggle-icon">+</span></div>
-              <div class="answer">Genellikle modern web teknolojilerine odaklanıyorum. JavaScript, Python, Node.js ve React gibi diller ve framework'ler en çok kullandıklarım arasında.</div>
-            </div>
-            <div class="about-qa-item">
-              <div class="question"><span>Soru: Gelecekteki projelerin neler?</span><span class="toggle-icon">+</span></div>
-              <div class="answer">Yapay zekâ ve siber güvenlik üzerine projeler geliştirmeyi planlıyorum. Özellikle kendi AI modellerimi oluşturmak ve siber tehditleri analiz eden araçlar geliştirmek istiyorum.</div>
-            </div>
-            <div class="about-qa-item">
-              <div class="question"><span>Soru: Bu web sitesi neden böyle bir tasarıma sahip?</span><span class="toggle-icon">+</span></div>
-              <div class="answer">Bu tasarım, siberpunk ve bilim kurgu temalarından ilham alıyor. Amacım, benim dijital kimliğimi ve ilgi alanlarımı yansıtan, fütüristik bir kullanıcı deneyimi sunmak.</div>
-            </div>
-            <div class="about-qa-item">
-              <div class="question"><span>Soru: Yapay zekâya ilgin nereden geliyor?</span><span class="toggle-icon">+</span></div>
-              <div class="answer">Yapay zekânın, geleceği şekillendirecek en önemli teknoloji olduğuna inanıyorum. Öğrenen makinelerin potansiyeli beni büyülüyor ve bu alanda sürekli yeni şeyler deniyorum.</div>
-            </div>
-            <div class="about-qa-item">
-              <div class="question"><span>Soru: Siber araştırmalar hakkında biraz daha bilgi verir misin?</span><span class="toggle-icon">+</span></div>
-              <div class="answer">Siber araştırmalar, dijital güvenlik zafiyetlerini ve sistem açıklarını incelemeyi içeriyor. Bu alandaki çalışmalarım, daha güvenli sistemler oluşturmama yardımcı oluyor.</div>
-            </div>
-            <div class="about-qa-item">
-              <div class="question"><span>Soru: Kendi projelerimi nasıl geliştirebilirim?</span><span class="toggle-icon">+</span></div>
-              <div class="answer">En iyi başlangıç, ilgini çeken küçük bir fikirle yola çıkmak. Basit bir projeyle başla, her adımı öğrenerek ilerle ve asla denemekten korkma.</div>
-            </div>
-          </div>
+    <section id="aboutPage" class="pageSection">
+      <h1>HAKKIMDA</h1>
+      <div class="about-text">
+        <p>
+          "DXLES" adı, "Digital" ve "Nexus" kelimelerinin birleşiminden geliyor.
+          Dijital dünyada bir bağlantı noktası, bir merkez olmayı hedefliyor.
+        </p>
+      </div>
+
+      <div class="about-qa-item">
+        <div class="question">Neden DXLES?</div>
+        <div class="answer">
+          <p>
+            Dxles, hem dijital evrenin derinliklerini keşfetmek hem de bu alanda
+            yeni bağlantılar kurmak için kullandığım bir takma ad. Her projemde
+            bu felsefeyi yansıtmaya çalışıyorum.
+          </p>
         </div>
-        <div class="spacer"></div>
-      </section>
+      </div>
+      <div class="about-qa-item">
+        <div class="question">Öne çıkan yeteneklerin neler?</div>
+        <div class="answer">
+          <p>
+            Hem front-end hem de back-end geliştirme konusunda deneyimim var.
+            Yapay zeka alanındaki çalışmalarım ise en tutkulu olduğum konu.
+            Yeni teknolojilere adapte olmak ve hızlı öğrenmek en güçlü yanım.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <section id="educationPage" class="pageSection">
+      <h1>EĞİTİM</h1>
+      <div class="education-qa-item">
+        <div class="question">Lisans Eğitimi</div>
+        <div class="answer">
+          <p>İstanbul Üniversitesi, Bilgisayar Mühendisliği</p>
+        </div>
+      </div>
+      <div class="education-qa-item">
+        <div class="question">Yapay Zeka ve Makine Öğrenmesi</div>
+        <div class="answer">
+          <p>
+            Çeşitli online kurslar ve atölye çalışmaları ile derinlemesine
+            öğrenim. TensorFlow, PyTorch ve Scikit-learn kütüphanelerine hakimiyet.
+          </p>
+        </div>
+      </div>
+    </section>
 
-      <section id="educationPage" class="pageSection">
-        <div class="panel">
-          <h3 style="color:#ff0044;font-family:'Orbitron';margin-bottom:10px">Eğitim Sayfası</h3>
-          <p>Yazılım dünyasına hoş geldin! Bu bölümde en popüler dillerin temel mantığını ve ilk adımlarını öğreneceksin.</p>
-          <div style="display:flex; flex-direction:column; gap:16px;">
+    <section id="projectsPage" class="pageSection">
+      <h1>PROJELER</h1>
+      <div class="project-grid">
+        <a href="#" class="project-card">
+          <img src="https://via.placeholder.com/180x180.png?text=Proje+1" alt="Proje 1" />
+          <h3>Siber Güvenlik Botu</h3>
+          <p>
+            Yapay zeka kullanarak siber saldırıları tespit eden ve önleyen bir bot.
+            Python ile geliştirildi.
+          </p>
+        </a>
+        <a href="#" class="project-card">
+          <img src="https://via.placeholder.com/180x180.png?text=Proje+2" alt="Proje 2" />
+          <h3>DX-Chatbot</h3>
+          <p>
+            Doğal dil işleme (NLP) yeteneği olan ve özelleştirilebilir bir
+            chatbot platformu.
+          </p>
+        </a>
+      </div>
+    </section>
 
-            <div class="education-qa-item">
-              <div class="question"><span>Python'a Giriş: İlk Adımlarınız</span><span class="toggle-icon">+</span></div>
-              <div class="answer">
-                <p>
-                  Python, basit ve okunabilir sözdizimi sayesinde yeni başlayanlar için harika bir dildir. Veri bilimi, yapay zekâ, web geliştirme ve otomasyon gibi birçok alanda kullanılır. En büyük avantajı, kod yazmayı bir metin yazmak kadar kolay hale getirmesidir.
-                </p>
+    <section id="blogPage" class="pageSection">
+      <h1>BLOG</h1>
+      <div class="blog-post">
+        <h3>Web Geliştirmede Gelecek</h3>
+        <p class="meta">10 Ağustos 2025</p>
+        <p>
+          Web 3.0, yapay zeka ve blok zinciri teknolojileri, web geliştirmeyi
+          nasıl dönüştürecek?
+        </p>
+      </div>
+      <div class="blog-post">
+        <h3>Makine Öğrenmesi İçin 5 Python Kütüphanesi</h3>
+        <p class="meta">12 Haziran 2025</p>
+        <p>
+          Veri bilimine yeni başlayanlar için en faydalı kütüphaneler.
+        </p>
+      </div>
+    </section>
 
-                <h4>1. Ekrana Yazı Yazmak: `print()` ve `import`</h4>
-                <p>
-                  Python'da ekrana bir mesaj yazdırmak için **<code>print()</code>** fonksiyonunu kullanırız. Tırnak işaretleri, bunun bir metin (`string`) olduğunu gösterir. **<code>import</code>** kelimesi ise başka birinin yazdığı hazır kodları veya fonksiyonları projenize dahil etmenizi sağlar. Bu sayede tekerleği yeniden icat etmek zorunda kalmazsınız.
-                </p>
-                <pre><code>import math # Matematik kütüphanesini dahil ettik
-print("Merhaba Dünya!")
-print("Pi sayısı:", math.pi)</code></pre>
-
-                <h4>2. Değişkenler: Bilgiyi Saklamak</h4>
-                <p>
-                  Değişkenler, verileri sakladığımız kutucuklardır. Python'da bir değişkenin tipini (sayı, metin, vs.) belirtmenize gerek yoktur.
-                </p>
-                <ul>
-                  <li>**String (Metin):** <code>isim = "DXLES"</code></li>
-                  <li>**Integer (Tam sayı):** <code>yas = 15</code></li>
-                  <li>**Float (Ondalıklı sayı):** <code>boy = 1.75</code></li>
-                </ul>
-                <p>
-                  Listeler, demetler ve sözlükler gibi karmaşık veri tipleri de mevcuttur.
-                </p>
-                <ul>
-                  <li>**Listeler (`list`):** Sıralı ve değiştirilebilir koleksiyonlar. <code>meyveler = ["elma", "armut", "muz"]</code></li>
-                  <li>**Sözlükler (`dict`):** Anahtar-değer çiftlerinden oluşan yapılar. <code>kullanici = {"ad": "DXLES", "rol": "Geliştirici"}</code></li>
-                </ul>
-
-                <h4>3. Koşullu İfadeler: `if`, `elif`, `else`</h4>
-                <p>
-                  Programlarımızın farklı durumlara göre farklı şeyler yapmasını sağlamak için koşullu ifadeleri kullanırız.
-                </p>
-                <pre><code>yas = 20
-
-if yas >= 18:
-    print("Reşitsiniz.")
-else:
-    print("Reşit değilsiniz.")
-
-notu = 85
-if notu > 90:
-    print("Harika!")
-elif notu > 70:
-    print("İyi.")
-else:
-    print("Tekrar denemelisin.")</code></pre>
-
-                <h4>4. Döngüler: `for` ve `while`</h4>
-                <p>
-                  Belirli bir işlemi defalarca tekrarlamak için döngüleri kullanırız.
-                </p>
-                <ul>
-                  <li>**`for` Döngüsü:** Belirli bir aralıktaki her eleman için kodu çalıştırır.</li>
-                  <li>**`while` Döngüsü:** Belirli bir koşul doğru olduğu sürece kodu çalıştırır.</li>
-                </ul>
-                <pre><code># 1'den 5'e kadar sayıları ekrana yazdırır (for)
-for i in range(1, 6):
-    print(i)
-
-# 10'dan geriye sayar (while)
-sayi = 10
-while sayi > 0:
-    print(sayi)
-    sayi -= 1</code></pre>
-              </div>
-            </div>
-
-            <div class="education-qa-item">
-              <div class="question"><span>Java'ya Giriş: Nesne Yönelimli Programlama</span><span class="toggle-icon">+</span></div>
-              <div class="answer">
-                <p>
-                  Java, nesne yönelimli (Object-Oriented) bir programlama dilidir. "Bir kez yaz, her yerde çalıştır" sloganıyla bilinir, çünkü Java Virtual Machine (JVM) sayesinde her işletim sisteminde sorunsuz çalışır. Mobil (Android), kurumsal ve masaüstü uygulamalar için sıklıkla tercih edilir.
-                </p>
-
-                <h4>1. Sınıflar (`Class`) ve Nesneler (`Object`)</h4>
-                <p>
-                  Java'da her şey bir sınıf içinde tanımlanır. Sınıflar, nesnelerin şablonlarıdır. Bir sınıf, nesnelerin sahip olabileceği özellikleri (değişkenler) ve davranışları (metotlar) tanımlar.
-                </p>
-                <pre><code>public class Araba {
-    String renk; // Özellik (değişken)
-    int hiz;     // Özellik (değişken)
-
-    public void gazVer() { // Davranış (metot)
-        System.out.println("Araba hızlanıyor.");
-    }
-}</code></pre>
-                <p>
-                  Bir sınıfı tanımladıktan sonra, ondan nesneler oluşturabiliriz:
-                </p>
-                <pre><code>Araba benimArabam = new Araba();
-benimArabam.renk = "Kırmızı";
-benimArabam.gazVer();</code></pre>
-
-                <h4>2. Ana Metot (`main`) ve Çıktı</h4>
-                <p>
-                  Her Java programı, **<code>public static void main(String[] args)</code>** ana metodu ile başlar. Bu, programın giriş noktasıdır.
-                </p>
-                <p>
-                  * **<code>System.out.println()</code>:** Ekrana bir satır metin yazar ve imleci bir alt satıra atar.
-                  * **<code>System.out.print()</code>:** Ekrana bir metin yazar, ancak alt satıra geçmez.
-                </p>
-
-                <h4>3. Değişkenler ve Döngüler</h4>
-                <p>
-                  Java'da değişken tanımlarken veri tipini belirtmek zorunludur.
-                </p>
-                <pre><code>// int, double, boolean gibi temel tipler
-int yas = 20;
-double boy = 1.80;
-boolean isOgrenci = true;
-
-// 1'den 10'a kadar sayıları toplayan döngü
-int toplam = 0;
-for (int i = 1; i <= 10; i++) {
-    toplam = toplam + i;
-}
-System.out.println("Toplam: " + toplam);</code></pre>
-              </div>
-            </div>
-
-            <div class="education-qa-item">
-              <div class="question"><span>HTML ve CSS'e Giriş: Web Geliştirmenin Temeli</span><span class="toggle-icon">+</span></div>
-              <div class="answer">
-                <p>
-                  HTML ve CSS, birbirini tamamlayan iki temel web teknolojisidir.
-                </p>
-                <p>
-                  **HTML (HyperText Markup Language):** Web sayfasının iskeletini oluşturur. Hangi başlık, hangi paragraf, nerede bir resim olacağı gibi içerik yapısını belirler.
-                </p>
-                <p>
-                  **CSS (Cascading Style Sheets):** Sayfanın görselini belirler. Renkler, yazı tipleri, boyutlar, boşluklar ve animasyonlar gibi tüm stil ayarları CSS ile yapılır.
-                </p>
-
-                <h4>1. Temel HTML Etiketleri</h4>
-                <p>
-                  HTML'de içerikler **etiketler** (`tags`) arasına yazılır.
-                </p>
-                <pre><code>&lt;!-- Başlık ve Paragraf --&gt;
-&lt;h1&gt;HTML Öğreniyorum&lt;/h1&gt;
-&lt;p&gt;Bu bir paragraf etiketidir.&lt;/p&gt;
-
-&lt;!-- Liste --&gt;
-&lt;ul&gt;
-  &lt;li&gt;Kahve iç&lt;/li&gt;
-  &lt;li&gt;Kod yaz&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!-- Link ve Resim --&gt;
-&lt;a href="https://www.google.com"&gt;Google'a Git&lt;/a&gt;
-&lt;img src="resim.jpg" alt="Harika bir resim"&gt;
-
-&lt;!-- Basit bir form --&gt;
-&lt;form&gt;
-  &lt;label for="ad"&gt;Adın:&lt;/label&gt;
-  &lt;input type="text" id="ad"&gt;
-  &lt;button type="submit"&gt;Gönder&lt;/button&gt;
-&lt;/form&gt;</code></pre>
-
-                <h4>2. CSS ile Sayfa Tasarımı</h4>
-                <p>
-                  CSS kodunu HTML dosyanızın içine `<style>` etiketleri arasına yazabilirsiniz.
-                </p>
-                <pre><code>&lt;style&gt;
-  body {
-    background-color: #0d0d0d;
-    font-family: Arial, sans-serif;
-  }
-  h1 {
-    color: #00ffff;
-  }
-  .ozel-paragraf {
-    color: #ddd;
-    font-size: 18px;
-  }
-&lt;/style&gt;
-
-&lt;h1&gt;Merhaba&lt;/h1&gt;
-&lt;p class="ozel-paragraf"&gt;Bu paragraf CSS ile renklendirildi.&lt;/p&gt;</code></pre>
-                <p>
-                  Bu örnekte, `body` etiketi tüm sayfanın arka planını, `h1` etiketi başlık rengini, `.ozel-paragraf` ise sadece bu sınıfa (`class`) sahip paragrafın stilini belirliyor.
-                </p>
-              </div>
-            </div>
-
-            <div class="education-qa-item">
-              <div class="question"><span>C++'a Giriş: Güç ve Performans</span><span class="toggle-icon">+</span></div>
-              <div class="answer">
-                <p>
-                  C++, sistem programlama, oyun geliştirme, yüksek performans gerektiren uygulamalar ve gömülü sistemler gibi alanlarda kullanılan, çok güçlü ve hızlı bir dildir. C++'ı öğrenmek biraz daha zor olsa da, donanım üzerinde tam kontrol sağlar.
-                </p>
-
-                <h4>1. Kütüphane Dahil Etme: `#include` ve `namespace`</h4>
-                <p>
-                  C++'da bir fonksiyonu kullanmak için o fonksiyonun bulunduğu kütüphaneyi programa dahil etmemiz gerekir. **<code>#include</code>** komutu bunu sağlar. **<code>using namespace std;</code>** ise `std::cout` gibi ifadelerin başındaki `std::` önekini yazmaktan kurtarır.
-                </p>
-                <pre><code>#include &lt;iostream&gt; // Giriş/çıkış işlemleri için
-#include &lt;string&gt;   // Metin işlemleri için
-
-using namespace std;
-
-int main() {
-    cout << "Merhaba Dünya!";
-    return 0;
-}</code></pre>
-
-                <h4>2. Girdi ve Çıktı: `cout` ve `cin`</h4>
-                <p>
-                  Ekrana metin yazdırmak için **<code>cout</code>** (Console Out), kullanıcıdan veri almak için ise **<code>cin</code>** (Console In) nesnesini kullanırız.
-                </p>
-                <pre><code>#include &lt;iostream&gt;
-#include &lt;string&gt;
-using namespace std;
-
-int main() {
-    string ad;
-    cout << "Adınızı girin: ";
-    cin >> ad;
-    cout << "Merhaba, " << ad << "!" << endl;
-    return 0;
-}</code></pre>
-
-                <h4>3. Fonksiyonlar ve Temel Bellek Yönetimi</h4>
-                <p>
-                  Fonksiyonlar, belirli bir görevi yerine getiren yeniden kullanılabilir kod bloklarıdır. C++'da **bellek yönetimi** (örneğin `new` ve `delete` ile) programcıya bırakılmıştır, bu da dilin çok hızlı olmasını sağlar.
-                </p>
-                <pre><code>#include &lt;iostream&gt;
-using namespace std;
-
-// Yeni bir fonksiyon tanımladık
-int topla(int x, int y) {
-    return x + y;
-}
-
-int main() {
-    int sonuc = topla(5, 7);
-    cout << "Sonuç: " << sonuc << endl;
-
-    // Basit bir bellek yönetimi örneği (İleri Seviye Konu)
-    int* sayi = new int(100);
-    cout << "Bellekteki sayı: " << *sayi << endl;
-    delete sayi; // Belleği temizledik
-
-    return 0;
-}</code></pre>
-              </div>
-            </div>
-
+    <section id="contactPage" class="pageSection">
+      <h1>İLETİŞİM</h1>
+      <div class="comments-section">
+        <h3>Yorum Bırak</h3>
+        <div class="comment-form">
+          <input type="text" id="commentName" placeholder="Adınız" />
+          <textarea id="commentText" placeholder="Yorumunuz"></textarea>
+          <button id="postComment">Yorumu Gönder</button>
+        </div>
+        <div id="commentList" class="comment-list">
+          <div class="comment-list-item">
+            <div class="author">Ziyaretçi</div>
+            <div class="text">Selam, siten harika olmuş!</div>
           </div>
         </div>
-        <div class="spacer"></div>
-      </section>
+      </div>
+    </section>
 
-      <section id="commentsPage" class="pageSection">
-        <div class="panel">
-          <h3 style="color:#ff0044;font-family:'Orbitron';margin-bottom:10px">Yorumlar</h3>
-          <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start">
-            <div style="flex:1;min-width:260px">
-              <div class="commentBox">
-                <input id="commentName" placeholder="Kullanıcı adı" />
-                <textarea id="commentText" rows="4" placeholder="Yorumun..."></textarea>
-                <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
-                  <button class="btn" id="postComment">Yorum Gönder</button>
-                  <div class="smallMuted">Yorumlar anında eklenir.</div>
-                </div>
-              </div>
-            </div>
-            <div style="flex:1.4;min-width:260px">
-              <div id="commentList" style="display:flex;flex-direction:column;gap:12px;padding-left:6px">
-                <div class="comment-list-item">
-                  <div class="author">Kuzen</div>
-                  <div class="text">Selam kuzen, bu site harika olmuş! Yorumlar bölümü de gayet güzel, eline sağlık.</div>
-                </div>
-                <div class="comment-list-item">
-                  <div class="author">Siber-Pioneer</div>
-                  <div class="text">Bu tasarım gerçekten geleceğe ait gibi, çok yaratıcı. Animasyonlar da çok akıcı.</div>
-                </div>
-                <div class="comment-list-item">
-                  <div class="author">TechLover</div>
-                  <div class="text">Hakkımda kısmındaki cevaplar çok bilgilendiriciydi, özellikle yapay zeka bölümü.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="spacer"></div>
-      </section>
-
-      <section id="contactPage" class="pageSection">
-        <div class="panel">
-          <h3 style="color:#ff0044;font-family:'Orbitron';margin-bottom:10px">İletişim</h3>
-          <p>Instagram: <a href="https://www.instagram.com/dxles" target="_blank"><strong>@dxles</strong></a></p>
-          <p>Telegram: <a href="https://t.me/dxles" target="_blank"><strong>@dxles</strong></a></p>
-          <p class="smallMuted">(Bu linkleri istediğin linklerle değiştirebilirsin.)</p>
-        </div>
-        <div class="spacer"></div>
-      </section>
-
-    </main>
   </div>
-
+  
   <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
-  <script>
+<script>
     /* ============================
        GLOBALS
        ============================ */
@@ -752,11 +319,6 @@ int main() {
     /* ============================
        ÇOK ÖNEMLİ! GÜVENLİK UYARISI
        ============================ */
-    // Bu kod sadece demo amaçlıdır. Kullanıcı verileri tarayıcının yerel hafızasında (localStorage) saklanır.
-    // Bu yöntem gerçek bir web sitesinde ASLA kullanılmamalıdır çünkü güvenli DEĞİLDİR ve
-    // tarayıcılar arası veya cihazlar arası kalıcı veri saklamaz.
-    // Şifreler şifrelenmeden saklanır. Bu bir güvenlik açığıdır.
-
     const USERS_KEY = 'dxles-demo-users';
 
     function loadUsers() {
@@ -779,26 +341,12 @@ int main() {
 
     /* ============================
        SEQUENCE:
-       1) show intro for 1.6s
-       2) show login OR AI override
-       3) on login -> show midload (2.5s) while globe visible
-       4) then show app
+       1) show login OR AI override
+       2) on login -> show midload (2.5s) while globe visible
+       3) then show app
        ============================ */
     const params = new URLSearchParams(window.location.search);
     const isAIOverride = params.get('ai') === 'true';
-
-    // after page load, hide intro -> show login OR AI override
-    function startInitialSequence() {
-      setTimeout(() => {
-        if (intro) intro.style.display = 'none';
-        if (isAIOverride) {
-          startMidLoadAndEnter('AI User', 'aboutPage');
-        } else {
-          if (login) login.style.display = 'flex';
-          if (userInput) userInput.focus();
-        }
-      }, 1600); // initial intro duration
-    }
 
     // helper to show mid loader
     function startMidLoadAndEnter(username, pageId = 'homePage') {
@@ -1051,7 +599,7 @@ int main() {
       scene.add(globeGroup);
 
       const textureLoader = new THREE.TextureLoader();
-      const mapTexture = textureLoader.load('https://i.imgur.com/rW71261.png');
+      const mapTexture = textureLoader.load('rW71261.png');
 
       const geomSolid = new THREE.SphereGeometry(8, 64, 64);
       const matSolid = new THREE.MeshPhongMaterial({
@@ -1223,11 +771,18 @@ int main() {
     }
 
     function init() {
+      if (intro) intro.style.display = 'none';
+      if (isAIOverride) {
+        startMidLoadAndEnter('AI User', 'aboutPage');
+      } else {
+        if (login) login.style.display = 'flex';
+        if (userInput) userInput.focus();
+      }
+
       initThree();
       animateThree();
       startAttacks();
       setCanvasDPR();
-      startInitialSequence();
     }
 
     function setCanvasDPR() {
@@ -1239,6 +794,7 @@ int main() {
 
     document.addEventListener('DOMContentLoaded', init);
     document.body.style.overflow = 'hidden';
-  </script>
+</script>
+
 </body>
 </html>
