@@ -973,12 +973,7 @@ int main() {
     // after page load, hide intro -> show login OR AI override
     setTimeout(()=> {
       intro.style.display = 'none';
-      if (isAIOverride) {
-        startMidLoadAndEnter('AI User', 'aboutPage');
-      } else {
-        login.style.display = 'flex';
-        userInput.focus();
-      }
+    startMidLoadAndEnter('Ziyaretçi');
     }, 1600); // initial intro duration
 
     // helper to show mid loader
@@ -1445,6 +1440,7 @@ int main() {
   </script>
 </body>
 </html>
+
 
 
 
